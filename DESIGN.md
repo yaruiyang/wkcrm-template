@@ -3,8 +3,8 @@ version: beta
 name: WKCRM-design-md
 standalone: true
 target_stack: "Vue 3 + Element Plus"
-audience: "AI Studio / 二开前端 / 客户沟通原型"
-recommended_use: "作为独立 WKCRM UI 规范包，用于快速生成 CRM 核心页面、客户沟通原型和二开模块模板。"
+audience: "AI Studio / Codex CLI / 二开前端"
+recommended_use: "作为独立 WKCRM UI 规范包，用于快速生成 Vue 3 + Element Plus 的 CRM 核心页面和二开模块模板。"
 description: >
   WKCRM 是密集型 CRM 管理系统，核心不是营销展示页，而是客户管理闭环、后台组织配置和信息配置能力。
   本规范已经把产品观察结果转成可独立使用的 UI 合约；使用者不需要访问任何源码项目。
@@ -62,20 +62,19 @@ shape:
 
 ## 使用方式
 
-本文件是可独立交付的 WKCRM UI 规范。使用者优先依赖 `DESIGN.md`、`element-plus-demo` 和同目录预览 HTML，在 AI Studio、前端二开或客户沟通原型中生成 WKCRM 风格的 Vue 3 + Element Plus 页面。
+本文件是 GitHub 模板仓库 `yaruiyang/wkcrm-template` 的 WKCRM UI 规范入口。使用者优先依赖 `DESIGN.md` 和 `element-plus-demo/`，在 AI Studio、Codex CLI 或前端二开中生成 WKCRM 风格的 Vue 3 + Element Plus 页面。
 
 典型使用场景：
 
-1. **AI Studio 生成页面**：把本文件作为设计约束，优先参考 `element-plus-demo` 的 Vue 3 + Element Plus 组件结构和 mock schema。
-2. **客户前期沟通原型**：结合预览 HTML 展示核心页面结构，快速沟通 CRM 的列表、详情、新建、配置和日志能力。
+1. **AI Studio 生成项目**：读取 GitHub 仓库 `https://github.com/yaruiyang/wkcrm-template`，把本文件作为设计约束，把 `element-plus-demo/` 作为 Vue 3 + Element Plus 模板来源。
+2. **Codex CLI 生成页面**：让 Codex 先读 `DESIGN.md`，再参考 `element-plus-demo/src/components`、`element-plus-demo/src/mock/schema.js` 和 `element-plus-demo/src/styles/wkcrm.scss`。
 3. **二开新模块 UI 约束**：新增业务对象时，按本规范复用列表、新建大弹窗、勾选条、小 dialog、右侧详情滑层和后台配置模板。
 
 使用优先级：
 
 1. 先遵守本文件的布局、组件、尺寸、颜色、交互和反模式。
 2. 再参考 `element-plus-demo` 的组件边界、Element Plus 用法、状态切换和 mock schema。
-3. 预览 HTML 只作为视觉关系和模块组织的沟通样张，不作为最终代码复刻依据。
-4. 最后根据具体业务字段替换模拟数据，不改变通用 UI 模式。
+3. 最后根据具体业务字段替换模拟数据，不改变通用 UI 模式。
 
 ## 资产定位
 
@@ -93,8 +92,8 @@ shape:
 - WKCRM 的核心体验由 CRM 业务对象、后台组织治理和信息配置能力组成。
 - CRM 业务对象以列表、批量操作、新建/编辑、右侧详情、活动、详细资料、关联数据、附件、操作记录构成闭环。
 - 后台管理以员工部门、角色权限、客户管理配置、业务审批流、业务参数、系统日志构成管理底座。
-- `element-plus-demo` 是后续 AI Studio 和二开生成的主参考，负责表达真实 Element Plus 组件结构、业务状态和 mock schema。
-- 预览 HTML 用来展示关键结构关系；它们是沟通样张，不再承担源码级高保真复刻职责。
+- `element-plus-demo/` 是后续 AI Studio、Codex CLI 和二开生成的唯一实现参考，负责表达真实 Element Plus 组件结构、业务状态和 mock schema。
+- Vite 应用入口文件只负责启动 demo，不是视觉规范；对标说明以 Vue 组件、`schema.js` 和 `wkcrm.scss` 为准。
 
 ## 产品骨架
 
@@ -601,7 +600,7 @@ export const customerDetailTabs = [
 
 客户是 CRM 业务对象模板的代表模块。后续生成线索、联系人、商机、合同、回款、发票等模块时，优先复用这一套页面结构、交互密度和弹层规则，只替换模块名称、字段和关联对象。
 
-CRM 生成的主参考是 `element-plus-demo`。预览 HTML 保留为沟通样张；真正约束生成质量的是 Vue 3 + 官方 Element Plus 的组件结构、WKCRM 覆盖样式、mock schema 和交互状态。验收目标是尽量接近真实 WKCRM 的结构、密度、状态和观感，但不承诺像素级完美复刻。
+CRM 生成的主参考是 `element-plus-demo/`。真正约束生成质量的是 Vue 3 + 官方 Element Plus 的组件结构、WKCRM 覆盖样式、mock schema 和交互状态。验收目标是尽量接近 WKCRM 的结构、密度、状态和观感，但不承诺像素级完美复刻。
 
 独立 Element Plus 模板必须遵守：
 
@@ -609,7 +608,7 @@ CRM 生成的主参考是 `element-plus-demo`。预览 HTML 保留为沟通样�
 - 通过 `wkcrm.scss` 之类的本地覆盖样式实现 WKCRM 色彩、密度、表格、弹层、详情滑层和只读字段框。
 - 自定义组件命名面向通用 CRM，例如 `CrmCustomerList`、`CrmCustomerDetail`、`CrmCreateDialog`，不要求使用者理解历史工程组件名。
 - 所有 mock 数据和字段模型必须独立维护，便于 AI Studio 直接替换模块名和字段生成新业务对象。
-- HTML preview 不作为代码还原依据；生成代码时优先参考 demo 的 Element Plus 组件组合和状态逻辑。
+- 生成代码时优先参考 demo 的 Element Plus 组件组合和状态逻辑；不要另起一套静态结构。
 - demo 内部通过统一尺寸、颜色、选择器和验收规则约束实现；生成或二开时不要绕过这些规则重新手写尺寸、状态和交互。
 
 ### CRMObjectTemplate 生成契约
@@ -651,7 +650,7 @@ CRM 生成的主参考是 `element-plus-demo`。预览 HTML 保留为沟通样�
 
 - 客户默认作为主验收对象。
 - 商机、联系人、线索、合同可作为最小生成示例，不要求在首版重复复刻每个模块的全部专属业务逻辑。
-- 联系人表格作为关联数据列表代表；商机、合同、报价单、回款等关联表复用同一模式，不在核心样张中重复铺开。
+- 联系人表格作为关联数据列表代表；商机、合同、报价单、回款等关联表复用同一模式，不在核心模板中重复铺开。
 
 Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”：
 
@@ -666,7 +665,7 @@ Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”�
 - mock schema 必须包含 `sceneList`、`fieldList`、`operations`、`tableStyleObj`、`detailTabs`、`abstractList`、`baseInfoGroups`、联系人、附件、操作记录等结构字段。
 - demo 的关键尺寸、颜色、选择器和字体权重应集中维护，运行态计算优先复用契约函数；不要在组件里散落 `206`、`320`、`32`、`48` 等关键尺寸魔法值。
 
-列表和详情 demo 的验收优先看尺寸、状态和交互契约，而不是继续调纯 HTML 样张：
+列表和详情 demo 的验收优先看尺寸、状态和交互契约，而不是另起一套静态实现：
 
 - 每轮完成后至少运行 demo 构建和契约静态检查；涉及实际 DOM 的列表、详情、弹框变更需要再运行浏览器 computed style 检查。
 - 顶部导航固定 56px，左侧 CRM 菜单固定 210px，菜单行高 40px，菜单项左右 12px 内边距，激活态使用 `#d4e4f9` 浅蓝底和主蓝文字。
@@ -675,7 +674,7 @@ Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”�
 - 表格必须使用 Element Plus `el-table border`，固定列宽 40px，固定列顺序为 selection、电话呼叫、星标、主字段；电话和星标使用 Element Plus 图标按钮，不用文本字符占位；主字段内的关联商机提示使用业务图标语义，不要用 `¥`、圆点或普通文本替代。
 - 表格表头和数据行高保持 32px，表头 padding 约 `4px 0`，cell padding 为 `0 8px`，表头背景 `#DFE1E6`，右边线和底边线形成细网格；表头字重 500，正文单元格字重 400，主字段链接字重 500；空字段也保留空单元格。
 - 客户列表表格区使用定高，不随数据内容自然变高；高度按 `window.innerHeight - 筛选头实际高度 - 206` 计算，最小高度 320px。
-- 勾选态下 `selection bar` 高度 48px、背景 `#42526E`，并让普通表头隐藏，不要同时展示两套表头；selection bar 接管表头状态后必须重新测量筛选头实际高度并重算表格高度，避免分页底部位置跳动；左侧布局按 `checkbox + 已选数量 + icon-only 清空按钮 + 横向操作区` 组织，checkbox 左右间距 20px，已选数量不额外加粗，操作按钮使用自然宽度；沟通样张默认只展示一个核心批量动作，例如“放入公海”。
+- 勾选态下 `selection bar` 高度 48px、背景 `#42526E`，并让普通表头隐藏，不要同时展示两套表头；selection bar 接管表头状态后必须重新测量筛选头实际高度并重算表格高度，避免分页底部位置跳动；左侧布局按 `checkbox + 已选数量 + icon-only 清空按钮 + 横向操作区` 组织，checkbox 左右间距 20px，已选数量不额外加粗，操作按钮使用自然宽度；demo 默认只展示一个核心批量动作，例如“放入公海”。
 - “放入公海”小 dialog 使用 WKCRM 等价结构：`el-dialog width="450px"`，不加自定义 dialog class，不手调 header/body/footer；标题通过 header slot 放 `el-dialog__title + wk-icon-fill-help`，表单为 `el-form label-position="top"`，字段为“公海”和“放入公海理由”，footer 为“保存 / 取消”。
 - 详情滑层宽度公式保持 `100vw - 左侧菜单宽度 - 160px`，最小宽度 950px；不要再用媒体查询改成 `100vw - 230px` 或缩窄右侧摘要。
 - 关闭按钮保持 WKCRM 外凸形态：primary、`top:160px; left:-40px; padding:19px 6px`、Close 图标，不要做成返回箭头或大色块。
@@ -716,15 +715,15 @@ Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”�
 - 日程/跟进/任务/发邮件是活动输入区的一组顶部 tabs，下方为输入框，不要简化成普通说明文本。
 - 待处理及逾期是独立白色卡片，空状态居中，并提供“创建日程”“创建任务”入口。
 - 活动流是独立白色卡片，包含筛选 pills、时间线、图标节点、人员、业务对象编号和状态 tag。
-- 详情左侧菜单在静态样张中精简为核心 5 项：活动、详细资料、联系人、附件、操作记录。
+- 详情左侧菜单在模板中精简为核心 5 项：活动、详细资料、联系人、附件、操作记录。
 - 详情内容必须与左侧菜单一一对应：点击“活动”只展示活动布局；点击“详细资料”只展示详细资料布局；点击“联系人”展示关联表格；点击“附件”展示附件表格；点击“操作记录”展示记录时间线。
 - 详细资料不是大字段卡片，而是分组详情：48px 分组头 + 两列字段；字段 label 在上，value 为 32px 左右的灰色只读输入框，背景 `#ebecf0`、边框 `#dfe1e6`、圆角 3px。
-- 联系人作为关联数据列表代表；联系人、商机、合同等重复表格模式不需要在同一静态样张中全部展开。
+- 联系人作为关联数据列表代表；联系人、商机、合同等重复表格模式不需要在同一模板中全部展开。
 - 右侧客户摘要为白色卡片，标题区 48px，body padding 16px；条目纵向排列，条目间距 16px，值使用普通 14px-16px 正文字号，不做大号 KPI 指标卡。
 
 ### 仪表盘
 
-CRM 仪表盘是业务对象列表前的经营入口，本轮不单独生成 HTML，但页面生成时必须遵守以下结构：
+CRM 仪表盘是业务对象列表前的经营入口。当前 `element-plus-demo/` 以客户列表为核心模板；后续生成仪表盘时必须遵守以下结构：
 
 - 指标区：新增客户、新增商机、预计成交金额、今日需跟进、逾期跟进。
 - 漏斗区：商机阶段漏斗，展示阶段名称、数量、金额和转化率。
@@ -910,7 +909,7 @@ export const customerCreateFields = [
 - 滑层顶部包含关闭按钮、上一条、下一条、编辑、更多操作。
 - 左侧纵向 tabs 默认激活“活动”。
 - 中间内容区根据 tabs 切换，每次只展示当前 tab 的内容，不要把所有 tab 内容堆叠成一个长页面。
-- 关联数据以联系人表格作为代表；商机、合同、报价单、回款等可复用同一表格模式，不在核心静态样张中重复展开。
+- 关联数据以联系人表格作为代表；商机、合同、报价单、回款等可复用同一表格模式，不在核心模板中重复展开。
 - 右侧摘要区固定展示关键统计，便于客户沟通时快速说明 CRM 关系数据；摘要值保持 14px-16px 正文字号，不做大号 KPI。
 - 关闭详情后回到原列表状态，不清空筛选、勾选和分页。
 
@@ -979,7 +978,7 @@ export const customerDetailMock = {
 
 ## 后台管理模板
 
-后台管理主交付以 `element-plus-demo` 的 `AdminShell` 为准，不继续依赖旧 `preview-admin.html`。后台是系统组织和配置底座，生成时必须覆盖员工部门、角色权限、自定义字段、业务审批流、线索池/客户公海规则、自定义打印模板、业务参数、系统日志等核心模板能力。
+后台管理主交付以 `element-plus-demo` 的 `AdminShell` 为准。后台是系统组织和配置底座，生成时必须覆盖员工部门、角色权限、自定义字段、业务审批流、线索池/客户公海规则、自定义打印模板、业务参数、系统日志等核心模板能力。
 
 后台外壳：
 
@@ -1139,7 +1138,7 @@ export const fieldTypes = [
 - 不要把后台配置页做成营销式卡片陈列。
 - 不要把员工部门、角色权限简化成单张普通表格。
 - 不要把字段设计器简化成普通编辑表单；字段库、画布、属性面板三栏必须同时存在。
-- 不要把审批流配置页做成普通 dialog；它应进入全屏流程配置样张。
+- 不要把审批流配置页做成普通 dialog；它应进入全屏流程配置模板。
 - 不要把系统日志做成活动流；日志是筛选条 + 高密度表格 + 详情 dialog。
 
 ## 模拟数据与字段模型
@@ -1172,7 +1171,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 | `createFieldGroups` | 新建/编辑大弹窗字段分组 |
 | `detailTabs` | 右侧详情 tabs |
 | `detailData` | 详情头、摘要、活动、详细资料、关联表、附件、操作记录 |
-| `operations` | 勾选操作条动作，沟通样张默认只保留 `放入公海` |
+| `operations` | 勾选操作条动作，demo 默认只保留 `放入公海` |
 
 ### 字段对象 schema
 
@@ -1191,7 +1190,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 | `tableVisible` | 是否出现在列表字段列 |
 | `createVisible` | 是否出现在新建/编辑大弹窗 |
 | `detailVisible` | 是否出现在详情详细资料 |
-| `mockValue` | 生成样张时使用的默认展示值 |
+| `mockValue` | 生成 demo 时使用的默认展示值 |
 
 字段类型映射由 `fieldTypeMap` 维护。常用映射：
 
@@ -1253,7 +1252,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 
 ### Schema 反模式
 
-- 不要只给页面截图或 HTML，缺少 `fieldList`、`rows`、`createFieldGroups`、`detailData` 时不能生成稳定模块。
+- 不要只给页面截图，缺少 `fieldList`、`rows`、`createFieldGroups`、`detailData` 时不能生成稳定模块。
 - 不要让同一字段在列表叫 `prop`、新建叫 `field`、详情叫 `fieldName` 且缺少归一层；最终生成入口必须同时提供统一 key。
 - 不要把字段类型写成自然语言，例如“下拉框字段”；必须使用稳定 `formType`。
 - 不要在后台 schema 里只给菜单名，必须同时给筛选项、字段列、数据行、动作和布局。
@@ -1272,7 +1271,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 
 - 不要依赖任何本地源码路径。
 - 不要复制或 import 原始产品源码组件。
-- 不要把 HTML preview 当作代码结构来源；preview 只用于理解视觉关系。
+- 不要脱离 `element-plus-demo/` 自行手绘一次性代码结构；生成时必须优先复用 demo 的组件边界、schema 和样式 token。
 - 不要把新建大弹窗做成 `el-dialog`；业务对象新建/编辑必须使用 900px 创建大弹层。
 - 不要把详情做成普通全页或普通三栏后台页；CRM 详情必须是右侧滑层 + WMD tabs。
 
@@ -1294,7 +1293,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 禁止：
 - 不要引用本地源码路径。
 - 不要复制或 import 原始产品源码组件。
-- 不要按 HTML preview 手绘 div 表格或卡片原型。
+- 不要脱离 `element-plus-demo/` 手绘 div 表格或卡片原型。
 - 不要引入营销页、hero、插画或低密度 SaaS 卡片风格。
 ```
 
@@ -1399,7 +1398,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 
 生成要求：
 - 复用 CRMObjectTemplate UI 契约，不改表格密度、弹层尺寸、详情滑层结构。
-- 如果对象有阶段，stageFlow 用阶段视图；如果没有阶段，也保留同一区域切换能力但用空阶段样张。
+- 如果对象有阶段，stageFlow 用阶段视图；如果没有阶段，也保留同一区域切换能力但用空阶段模板。
 ```
 
 ### 员工部门
@@ -1465,7 +1464,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 生成目标：
 - 列表字段来自 fields，数据来自 rows，筛选项来自 filters。
 - 操作列包含编辑、删除、启用停用、复制并新建等 actions。
-- 新建审批流程进入全屏流程配置样张，包含基础信息、审批流程、流程画布和高级配置。
+- 新建审批流程进入全屏流程配置模板，包含基础信息、审批流程、流程画布和高级配置。
 
 验收：
 - 表格高度使用 layout.tableOffset。
@@ -1535,12 +1534,14 @@ CRM UI：
 禁止项：
 - 是否出现本地源码路径。
 - 是否 import 原始产品源码组件。
-- 是否按 HTML preview 手绘 div 表格。
+- 是否脱离 `element-plus-demo/` 手绘 div 表格。
 - 是否把 CRM 详情做成普通全页。
 ```
 
 ## Element Plus Demo 对照
 
+- GitHub 仓库：`https://github.com/yaruiyang/wkcrm-template`。
+- `DESIGN.md`：AI Studio、Codex CLI 和二开生成项目时的设计规范入口。
 - `element-plus-demo/`：独立 Vue 3 + 官方 Element Plus 最小模板，是后续 AI Studio 和二开生成 CRM 页面时的主参考。
 - demo 的 mock 文件：客户字段、列表数据、阶段数据、卡片数据、详情摘要、联系人、附件、操作记录和弹层字段 schema。
 - demo 的 `wkcrm.scss`：WKCRM tokens 和 Element Plus 覆盖样式，用于控制颜色、密度、表格、弹层、详情滑层、左侧菜单和只读字段框。
@@ -1548,24 +1549,6 @@ CRM UI：
 - demo 的组件边界应优先表达真实产品结构契约：列表侧按页面头/筛选头/主表格外壳拆分，详情侧按滑层/WMD tabs/header/body/right 拆分。
 
 生成代码时优先读取 demo 的 Vue 组件结构，再结合本文件规则扩展字段和业务模块。
-
-## 预览 HTML 对照
-
-当前标准预览文件：
-
-- `preview-foundation.html`：基础元素图库，包含颜色、字体、按钮、表单、表格、tabs、分页、弹窗状态。
-- `preview-components.html`：通用组件模式图库，包含应用外壳、页面头部、表格、selection bar、大弹窗、小 dialog、详情滑层。
-- `preview-crm-list.html`：CRM 列表、新建大弹窗、勾选条、小 dialog。作为视觉参考，不作为最终代码复刻依据。
-- `preview-crm-detail.html`：CRM 右侧详情滑层、活动、资料、关联数据、附件、操作记录。作为视觉参考，不作为最终代码复刻依据。
-- `preview-admin.html`：员工部门、角色权限、字段设计器、审批流、日志的后台核心布局。
-- `preview-dark.html`：深色演示适配，仅用于客户想看暗色方向；浅色仍是主规范。
-
-历史参考预览文件：
-
-- `preview.html`：早期客户列表参考，后续以 `element-plus-demo` 为主。
-- `preview-detail.html`：早期客户详情参考，后续以 `element-plus-demo` 为主。
-
-预览文件命名清理和旧文件取舍在 P7 处理。
 
 ## 验收清单与反模式
 
