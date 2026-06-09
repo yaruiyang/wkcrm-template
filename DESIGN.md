@@ -29,7 +29,7 @@ colors:
   warning: "#FF991F"
   danger: "#DE350B"
   info: "#5243AA"
-  canvas: "#F4F5F7"
+  canvas: "#F5F6F9"
   detail-canvas: "#F4F9FC"
   table-head: "#DFE1E6"
   overlay: "rgba(23, 43, 77, 0.50)"
@@ -70,11 +70,48 @@ shape:
 2. **Codex CLI 生成页面**：让 Codex 先读 `DESIGN.md`，再参考 `element-plus-demo/src/components`、`element-plus-demo/src/mock/schema.js` 和 `element-plus-demo/src/styles/wkcrm.scss`。
 3. **二开新模块 UI 约束**：新增业务对象时，按本规范复用列表、新建大弹窗、勾选条、小 dialog、右侧详情滑层和后台配置模板。
 
+正式使用入口：
+
+- `DESIGN.md`：视觉、组件、schema、生成提示词和验收反模式的主规范。
+- `AI_STUDIO_USAGE.md`：AI Studio、Codex CLI 和二开生成者的读取顺序、字段模型关系和交付前检查。
+- `element-plus-demo/`：Vue 3 + 官方 Element Plus 运行态模板，提供组件边界、mock schema、字段模型和 `wkcrm.scss` 覆盖样式。
+- 开发支持文件、内部验收脚本、内部 contract 常量、构建产物和依赖目录不属于生成上下文，外部生成者不要读取、复制或 import。
+
 使用优先级：
 
 1. 先遵守本文件的布局、组件、尺寸、颜色、交互和反模式。
 2. 再参考 `element-plus-demo` 的组件边界、Element Plus 用法、状态切换和 mock schema。
 3. 最后根据具体业务字段替换模拟数据，不改变通用 UI 模式。
+
+模板数据边界：
+
+- CRMObjectTemplate 当前内置对象只包括客户、线索、联系人、商机、合同。
+- 回款、发票、产品等 CRM 对象属于后续扩展目标，应按同一模板契约另行补充 schema。
+- 后台模板当前保留员工、角色、字段配置、审批流、系统日志等示例数据，作为后台生成入口。
+- 外部测试业务只能作为生成目标输入，用来验证模板能否迁移到新业务域；不要把测试业务的模块名、字段名、样例数据反写进本模板仓库。
+- 生成新业务时复制并替换业务 schema，保留本模板的布局、密度、交互和 Element Plus 组件结构。
+
+能力取舍：
+
+- 模板优先保证核心逻辑可用，不能保证完整体验的能力不要生成。
+- 源码中依赖远程配置、复杂权限、真实文件服务、第三方账号或不可稳定 mock 的能力，不要用静态假入口冒充可用功能。
+- 生成页面时先保留列表查看、搜索、高级筛选、新建、详情摘要、跟进记录、组织树、角色权限和字段配置等核心闭环，再按业务需要扩展。
+
+精炼 mock 原则：
+
+- 布局、组件封装、字段模型和 mock 数据都要清晰克制。
+- 字段模型优先：后续 AI 生成或模板二开时，优先修改统一字段模型和 mock 数据，由列表列、新建表单、详情资料、高级筛选和后台字段画布派生，不在组件里硬编码字段。
+- mock 只覆盖复测场景，不搬运源码里的临时账号、数字名、测试名或脏数据。
+- 客户、员工、联系人、商机、合同等样例保持少量业务可读数据，覆盖状态、阶段、部门、负责人、跟进和权限差异即可。
+
+element-plus-demo 内容边界：
+
+- `element-plus-demo/src/components`、`element-plus-demo/src/mock/schema.js`、`element-plus-demo/src/mock/*.js`、`element-plus-demo/src/styles/wkcrm.scss` 和 `element-plus-demo/src/constants/wkcrmUiTokens.js` 是生成业务页面时可参考的运行态模板内容。
+- 不要引入内部契约、测试脚本、构建产物或依赖目录。
+- `element-plus-demo/scripts/**` 只用于模板仓库内部验收，不属于页面模板内容，AI Studio 不应读取或复制。
+- 内部 contract 常量目录只用于本仓库验收脚本，不属于业务运行态模板，AI Studio 不应读取、复制或 import。
+- `element-plus-demo/dist/**`、`element-plus-demo/node_modules/**`、`element-plus-demo/package-lock.json`、`**/.DS_Store`、临时截图和缓存目录不得作为最终模板内容或 AI 生成页面内容引入。
+- `element-plus-demo/package.json`、lockfile、`vite.config.js`、`index.html` 只属于可运行 demo scaffold，不属于业务页面模板内容。
 
 ## 资产定位
 
@@ -114,7 +151,7 @@ WKCRM 的核心 UI 由三类能力组成：
 | 主色 | `primary` | `#0052CC` | 主按钮、选中、链接、关键操作 | hover 使用 `primary-hover`，禁用时降为 40% 透明或浅灰 |
 | 主色 hover | `primary-hover` | `#0065FF` | Hover 与强调链接 | 只用于交互态，不做大面积背景 |
 | 主色浅底 | `primary-soft` | `#DEEBFF` | 选中菜单、浅色激活态 | 配合 `primary` 文本，不单独承载正文 |
-| 页面底 | `canvas` | `#F4F5F7` | CRM 页面和后台页面主背景 | 页面级背景，白色内容面板放在其上 |
+| 页面底 | `canvas` | `#F5F6F9` | CRM 页面和后台页面主背景 | 对应运行态 `--wk-canvas`，白色内容面板放在其上 |
 | 详情底 | `detail-canvas` | `#F4F9FC` | 右侧详情滑层背景 | 只用于详情滑层和摘要区域 |
 | 表头底 | `table-head` | `#DFE1E6` | CRM 主表格表头 | 与边框 `n40` 同时使用；不要用页面底色替代表头 |
 | 遮罩 | `overlay` | `rgba(23,43,77,.50)` | 弹窗遮罩 | 业务对象创建大弹窗和 Dialog 共用 |
@@ -128,6 +165,12 @@ WKCRM 的核心 UI 由三类能力组成：
 | 警告 | `warning` | `#FF991F` | 待处理、提示 | Tag 使用浅黄底 + 警告文字 |
 | 危险 | `danger` | `#DE350B` | 删除、锁定、错误 | 删除按钮、错误边框、危险提示 |
 | 信息/紫色 | `info` | `#5243AA` | 扩展信息、特殊标识 | 只作为辅助语义色，不大面积铺底 |
+
+运行态 token 对齐规则：
+
+- 页面级背景使用 `--wk-canvas: #F5F6F9`；`n20 #F4F5F7` 只作为浅底、新建 header、禁用底和局部状态底色。
+- Element Plus 主题色使用 `--el-color-primary`、`--el-color-success`、`--el-color-warning`、`--el-color-danger`、`--el-color-error` 和 `--el-color-info` 映射本表语义色。
+- 关键尺寸、表格高度扣减和后台布局尺寸由 `element-plus-demo/src/constants/wkcrmUiTokens.js` 维护，不在组件中散写魔法值。
 
 ### 字体与密度
 
@@ -306,6 +349,14 @@ overlay
 
 ## 通用组件模式
 
+运行态组件边界：
+
+- 前台外壳以 `CrmAppShell` 为准，后台外壳以 `AdminShell` 为准。
+- 页面头使用 `CrmPageHeader`；列表筛选头、场景 tabs、视图切换和 selection bar 使用 `CrmTableHeader`。
+- 主表格、阶段视图和卡片视图由 `CrmMainTableWrap` 统一承载，表格高度计算继续使用 `wkcrmUiTokens.js`。
+- 业务对象新建/编辑使用 `CrmCreateDialog`；轻量批量操作使用 `CrmSmallDialog`。
+- 右侧详情滑层使用 `CrmSlideView` 和 `CrmDetailMenuLayout`，详情头、摘要和各 tab 内容分别由对应详情组件承载。
+
 ### 应用外壳
 
 CRM 外壳：
@@ -362,7 +413,7 @@ CRM 外壳：
 ```text
 表格工具条
   左侧：搜索框 + 场景 tabs
-  右侧：展开筛选 + 高级筛选 + 视图切换 + 设置
+  右侧：高级筛选 + 视图切换 + 设置
 ```
 
 尺寸与状态：
@@ -372,6 +423,7 @@ CRM 外壳：
 - 场景 tabs 激活态使用深色底或主色底，保持紧凑。
 - 筛选按钮使用 default/text-bg，图标可辅助但不替代必要文本。
 - 高级筛选打开后不改变表格列宽；筛选条件区域应独立展开。
+- 列表最小模板只保留一个高级筛选入口，避免同一筛选能力重复出现。
 
 禁止事项：
 
@@ -423,26 +475,7 @@ CRM 外壳：
 - 显示位置应贴近表格头部，替代表格工具条或位于工具条下方。
 - 清空选择后恢复普通表格工具条。
 
-客户列表常见操作：
-
-```js
-export const customerSelectionActions = [
-  '发送邮件',
-  '发送短信',
-  '转移',
-  '放入公海',
-  '更改成交状态',
-  '导出选中',
-  '删除',
-  '锁定',
-  '解锁',
-  '添加团队成员',
-  '移除团队成员',
-  '批量编辑',
-  '跨组织共享',
-  '批量打印'
-]
-```
+组件支持横向批量动作区，但 demo 默认只保留一个核心批量动作：`放入公海`。生成新业务时只有在需求明确要求时才增加其他批量动作。
 
 禁止事项：
 
@@ -473,10 +506,10 @@ export const customerSelectionActions = [
 - 内容区按字段分组，分组标题左侧 4px 蓝色竖条，标题 16px/600。
 - 表单使用顶部 label。
 - 字段按后台字段配置生成，字段项默认两列 `50%`，字段项内边距 `12px 12px 0`，输入/select 高度 `32px`。
-- 地址、富文本、明细表格、折叠控制等复杂字段占整行。
+- 地址、富文本、明细表格等复杂字段占整行。
 - 客户名称字段右上可出现“工商信息”入口。
-- 字段过多时使用“展开/收起”控制；默认展示核心字段，展开后显示补充字段。
-- Footer 右侧按钮顺序：`保存`、可选 `保存并新建联系人`、`取消`。
+- 字段默认全部展示，不生成字段隐藏切换。
+- Footer 右侧按钮顺序：`保存`、`取消`。
 - Body 滚动时 header 和 footer 保持稳定。
 - 提交中只禁用 footer 操作，不改变表单布局。
 
@@ -537,34 +570,15 @@ CRM 详情不是普通全页跳转，而是从右侧滑出的详情层：
 - 不要移除活动、详细资料、附件、操作记录这些基础 tabs。
 - 不要把右侧摘要做成大面积营销卡片。
 
-详情 tabs 常见项：
+详情 tabs 核心模板项：
 
 ```js
 export const customerDetailTabs = [
   '活动',
   '详细资料',
-  '360视图',
-  '拜访计划',
-  '工商信息',
-  '客户关系',
   '联系人',
-  '团队成员',
-  '商机',
-  '报价单',
-  '合同',
-  '产品',
-  '任务',
-  '回款',
-  '回访',
-  '发票',
-  '客户地址',
-  '费用',
-  '金额比例设置',
   '附件',
-  '操作记录',
-  '打印记录',
-  '呼叫记录',
-  '音视频助手'
+  '操作记录'
 ]
 ```
 
@@ -598,7 +612,9 @@ export const customerDetailTabs = [
 
 ## CRM 业务对象模板
 
-客户是 CRM 业务对象模板的代表模块。后续生成线索、联系人、商机、合同、回款、发票等模块时，优先复用这一套页面结构、交互密度和弹层规则，只替换模块名称、字段和关联对象。
+客户是 CRM 业务对象模板的代表模块。当前内置模板对象为 `customer`、`leads`、`contacts`、`business`、`contract`，分别对应客户、线索、联系人、商机、合同。
+
+后续扩展回款、发票等对象时，继续复用这一套页面结构、交互密度和弹层规则，只替换模块名称、字段和关联对象。
 
 CRM 生成的主参考是 `element-plus-demo/`。真正约束生成质量的是 Vue 3 + 官方 Element Plus 的组件结构、WKCRM 覆盖样式、mock schema 和交互状态。验收目标是尽量接近 WKCRM 的结构、密度、状态和观感，但不承诺像素级完美复刻。
 
@@ -613,7 +629,7 @@ CRM 生成的主参考是 `element-plus-demo/`。真正约束生成质量的是 
 
 ### CRMObjectTemplate 生成契约
 
-`element-plus-demo` 的 CRM 页面由 `CRMObjectTemplate` 驱动。客户是最高保真样板，线索、联系人、商机、合同等对象复用同一套 UI 结构和交互密度，只替换对象配置。
+`element-plus-demo` 的 CRM 页面由 `CRMObjectTemplate` 驱动。生成入口以 `element-plus-demo/src/mock/schema.js` 导出的 `crmSchema.objects[type]` 为准。客户是最高保真样板，线索、联系人、商机、合同等对象复用同一套 UI 结构和交互密度，只替换对象配置，组件不应硬编码某个对象的字段。
 
 每个对象模板必须包含：
 
@@ -642,14 +658,17 @@ CRM 生成的主参考是 `element-plus-demo/`。真正约束生成质量的是 
 - `title` 控制页面标题；主按钮文案始终为 `新建{moduleName}`。
 - `mainField` 控制列表主链接、阶段卡片标题、卡片视图标题和详情标题。
 - `fieldList` 控制业务表格列；固定列仍由模板组件提供，不写进业务字段列。
-- `createFieldGroups` 控制新建/编辑大弹窗字段；字段项继续使用 `stylePercent`、`formType`、`isNull`、`collapseOnly`。
+- `createFieldGroups` 控制新建/编辑大弹窗字段；字段项继续使用 `stylePercent`、`formType`、`isNull`、`placeholder`。
+- `uiProfile` 控制列表、详情和创建弹层的最小可用动作；生成器应按它隐藏非核心动作，不把隐藏动作再画成无效按钮。
 - `detailTabs` 和 `detailData` 控制右侧详情滑层；首版保留活动、详细资料、联系人、附件、操作记录五个核心 tabs。
 - 对象切换不改变表格 32px 密度、selection bar 48px、新建大弹窗 900px、详情滑层宽度公式和右侧摘要规则。
 
 对象复用边界：
 
 - 客户默认作为主验收对象。
+- 当前内置对象保持 `customer`、`leads`、`contacts`、`business`、`contract` 五类；未进入 `crmSchema.objects` 的对象不视为当前 demo 内置对象。
 - 商机、联系人、线索、合同可作为最小生成示例，不要求在首版重复复刻每个模块的全部专属业务逻辑。
+- 回款、发票等对象属于后续扩展目标，生成前必须先补齐对应 `CRMObjectTemplate`，不能直接复用客户字段硬编码页面。
 - 联系人表格作为关联数据列表代表；商机、合同、报价单、回款等关联表复用同一模式，不在核心模板中重复铺开。
 
 Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”：
@@ -671,7 +690,7 @@ Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”�
 - 顶部导航固定 56px，左侧 CRM 菜单固定 210px，菜单行高 40px，菜单项左右 12px 内边距，激活态使用 `#d4e4f9` 浅蓝底和主蓝文字。
 - 客户列表主内容保持 `20px 20px 0`，不要在窄屏媒体查询里改成更大的左右 padding。
 - 搜索框宽度 220px；场景 tabs 与“显示:”同排；右侧筛选按钮、视图切换按钮保持 32px 密度，视图切换内部 item 为 24px。
-- 表格必须使用 Element Plus `el-table border`，固定列宽 40px，固定列顺序为 selection、电话呼叫、星标、主字段；电话和星标使用 Element Plus 图标按钮，不用文本字符占位；主字段内的关联商机提示使用业务图标语义，不要用 `¥`、圆点或普通文本替代。
+- 表格必须使用 Element Plus `el-table border`，固定列宽 40px，固定列顺序为 selection、星标、主字段；星标使用 Element Plus 图标按钮，不用文本字符占位；主字段内的关联商机提示使用业务图标语义，不要用 `¥`、圆点或普通文本替代。
 - 表格表头和数据行高保持 32px，表头 padding 约 `4px 0`，cell padding 为 `0 8px`，表头背景 `#DFE1E6`，右边线和底边线形成细网格；表头字重 500，正文单元格字重 400，主字段链接字重 500；空字段也保留空单元格。
 - 客户列表表格区使用定高，不随数据内容自然变高；高度按 `window.innerHeight - 筛选头实际高度 - 206` 计算，最小高度 320px。
 - 勾选态下 `selection bar` 高度 48px、背景 `#42526E`，并让普通表头隐藏，不要同时展示两套表头；selection bar 接管表头状态后必须重新测量筛选头实际高度并重算表格高度，避免分页底部位置跳动；左侧布局按 `checkbox + 已选数量 + icon-only 清空按钮 + 横向操作区` 组织，checkbox 左右间距 20px，已选数量不额外加粗，操作按钮使用自然宽度；demo 默认只展示一个核心批量动作，例如“放入公海”。
@@ -692,9 +711,9 @@ Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”�
 - 主内容区使用浅灰页面底，客户列表页面密度为 `20px 20px 0`。
 - 页面标题区高度约 48px，标题为 24px 粗体，右侧主按钮为 32px。
 - 搜索框宽约 220px，高 32px；场景 tabs 与“显示:”文案同排，按钮为 text bg 风格。
-- 展开筛选、高级筛选、视图切换位于右侧，按钮高度 32px，图标按钮保持 32px 正方形。
+- 高级筛选、视图切换位于右侧，按钮高度 32px，图标按钮保持 32px 正方形。
 - 表格是核心，不要用卡片列表替代表格。表头为浅灰底，表头和数据行高 32px，列之间保留细边框；除页面标题、表头、主字段链接和必要状态外，正文不要加粗。
-- 默认表格视图需要保留固定列：selection、电话呼叫、星标、主字段；关联商机提示放在主字段单元格内，主字段为主蓝链接。
+- 默认表格视图需要保留固定列：selection、星标、主字段；关联商机提示放在主字段单元格内，主字段为主蓝链接。
 - 空字段也必须保留网格占位，形成真实 CRM 数据稀疏感，不要把空字段压缩掉。
 - 当前行或选中行使用浅蓝底；分页位于固定高度表格外壳下方，保留 15条/页、总数、页码和跳转，不要做成 fixed bottom，也不要让表格随内容高度慢慢撑开。
 - 勾选后 selection bar 紧贴表格上方，48px 高，深灰蓝背景，左侧 checkbox + 已选数量 + icon-only 清空按钮，中间横向批量操作。勾选 1 条但未全选时，左侧 checkbox 使用半选减号状态；全选态 checkbox 背景与 selection bar 同色；勾选态下普通表头隐藏，由 selection bar 接管表格顶部；选中和未选中两种状态下分页底部位置应保持稳定。
@@ -710,11 +729,10 @@ Element Plus demo 是“真实产品结构翻译”，不是“截图临摹”�
 - 滑层背景为浅蓝灰，宽度按 `100vw - 左侧菜单宽度 - 160px` 计算，最小宽度 950px；内容由左侧 tab 轨道、中间滚动内容、右侧 330px-340px 客户摘要组成。
 - 左侧 tab 轨道不是普通 sidebar，而是沿纵向排列的 25px 高小块，激活项深灰蓝底白字。圆点必须绑定到每个菜单项，8px 圆点中心与纵向竖线对齐，不能手工漂浮。
 - 关闭把手是 primary 小按钮，位于滑层左侧外凸位置，`top:160px; left:-40px; padding:19px 6px`，图标为关闭，不是返回箭头。
-- Header 是白色 12px 圆角卡片，包含客户类型、客户名称、星标、成交状态、上一条/下一条、编辑、更多、基础字段和右下角快捷新建入口。
+- Header 是白色 12px 圆角卡片，包含客户类型、客户名称、星标、成交状态、编辑按钮和基础字段。
 - 客户阶段是独立白色卡片，不放进 Header 内部；阶段条约 22px 高，使用当前阶段蓝底白字、后续阶段浅灰底深色字，并通过左右箭头块衔接，不用普通梯形条替代。
-- 日程/跟进/任务/发邮件是活动输入区的一组顶部 tabs，下方为输入框，不要简化成普通说明文本。
-- 待处理及逾期是独立白色卡片，空状态居中，并提供“创建日程”“创建任务”入口。
-- 活动流是独立白色卡片，包含筛选 pills、时间线、图标节点、人员、业务对象编号和状态 tag。
+- 活动输入区只保留“跟进记录”入口，下方为输入框，不要简化成普通说明文本。
+- 活动流是独立白色卡片，只保留“跟进记录”和“动态”两类展示单元，包含筛选 pills、时间线、图标节点、人员、业务对象编号和状态 tag。
 - 详情左侧菜单在模板中精简为核心 5 项：活动、详细资料、联系人、附件、操作记录。
 - 详情内容必须与左侧菜单一一对应：点击“活动”只展示活动布局；点击“详细资料”只展示详细资料布局；点击“联系人”展示关联表格；点击“附件”展示附件表格；点击“操作记录”展示记录时间线。
 - 详细资料不是大字段卡片，而是分组详情：48px 分组头 + 两列字段；字段 label 在上，value 为 32px 左右的灰色只读输入框，背景 `#ebecf0`、边框 `#dfe1e6`、圆角 3px。
@@ -740,7 +758,7 @@ CRM 仪表盘是业务对象列表前的经营入口。当前 `element-plus-demo
 标准结构：
 
 1. 页面头部：标题、帮助图标、右侧主按钮和辅助操作。
-2. 表格工具条：搜索、场景 tabs、展开筛选、高级筛选、视图切换。
+2. 表格工具条：搜索、场景 tabs、高级筛选、视图切换。
 3. 业务表格：selection、关注星标、主字段、业务字段列、分页。
 4. 勾选后显示 48px 深灰 selection bar。
 5. 行点击打开右侧详情滑层。
@@ -750,11 +768,12 @@ CRM 仪表盘是业务对象列表前的经营入口。当前 `element-plus-demo
 
 - 页面标题使用“{模块名}管理”，例如“客户管理”。
 - 主按钮使用“新建{模块名}”，例如“新建客户”。
+- 页面头部保留查重、导入、导出三个辅助动作，必须提供本地 mock 行为或明确反馈。
 - 搜索框 placeholder 使用“{模块名}名称/手机/电话”或该模块最常见的 2-3 个检索字段。
 - 场景 tabs 至少包含“全部客户”“我负责的客户”“下属负责的客户”“我关注的客户”。
-- 展开筛选用于常用字段，高级筛选用于复杂条件组合。
+- 高级筛选用于复杂条件组合；列表最小模板只保留这一套筛选入口。
 - 视图切换包含表格、阶段、卡片三种核心状态，默认激活表格。
-- 表格第一列是 checkbox，后续固定列依次表达业务提示、电话呼叫、关注星标和主字段链接。
+- 表格第一列是 checkbox，后续固定列依次表达关注星标和主字段链接。
 - 主字段点击打开右侧详情滑层，不跳普通全页。
 - 分页位于表格外壳底部，默认每页 15 条；表格区使用视口公式定高，不使用 fixed bottom，也不按内容自然撑高。
 
@@ -783,49 +802,49 @@ export const customerListFields = [
 export const customerRows = [
   {
     customerId: 'C-304-001',
-    customerName: '合同客户',
-    mobile: '',
-    telephone: '',
-    source: '',
-    industry: '',
-    level: '',
+    customerName: '苏州星禾精密制造',
+    mobile: '139****6182',
+    telephone: '0512-88990012',
+    source: '搜索引擎',
+    industry: '智能制造',
+    level: 'A',
     dealStatus: 1,
-    nextTime: '',
+    nextTime: '2026-06-10 10:30:00',
     ownerUserName: 'admin',
-    updateTime: '2026-05-20 14:29:19',
-    createTime: '2025-07-10 14:12:35',
-    lastRecord: '123',
-    star: 0,
+    updateTime: '2026-06-03 14:29:19',
+    createTime: '2026-05-20 14:12:35',
+    lastRecord: '确认样品交付时间',
+    star: 1,
     status: 1
   },
   {
     customerId: 'C-304-002',
-    customerName: '小小亮',
+    customerName: '上海云启设备服务',
     mobile: '155****5545',
-    telephone: '166****4542',
-    source: '',
-    industry: '',
-    level: '',
-    dealStatus: 0,
-    nextTime: '2026-04-20 12:56:56',
-    ownerUserName: 'admin',
-    updateTime: '2026-04-20 09:57:02',
-    lastRecord: '联系人0001',
+    telephone: '021-66558899',
+    source: '客户介绍',
+    industry: '企业服务',
+    level: 'A',
+    dealStatus: 1,
+    nextTime: '2026-06-12 15:00:00',
+    ownerUserName: '林舟',
+    updateTime: '2026-06-02 09:57:02',
+    lastRecord: '确认服务续费范围',
     star: 1,
     status: 1
   },
   {
     customerId: 'C-304-003',
-    customerName: '东莞临熵精密科技有限公司',
-    mobile: '',
+    customerName: '杭州明策科技',
+    mobile: '186****6803',
     telephone: '',
-    source: '',
-    industry: '智能制造',
-    level: 'A',
+    source: '线上咨询',
+    industry: '软件服务',
+    level: 'B',
     dealStatus: 0,
-    address: '广东省东莞市东城街道堑头路96号3036室',
-    ownerUserName: 'admin',
-    updateTime: '2026-03-09 15:41:26',
+    address: '浙江省杭州市滨江区江南大道 88 号',
+    ownerUserName: '张敏',
+    updateTime: '2026-05-30 15:41:26',
     star: 0,
     status: 1
   }
@@ -836,7 +855,7 @@ export const customerRows = [
 
 - 勾选 1 条或多条记录后，列表顶部必须出现 48px 深色 selection bar。
 - 左侧显示已选数量，中间横向排列批量操作，右侧提供清空选择。
-- 客户列表常见操作：发送邮件、发送短信、转移、放入公海、更改成交状态、导出选中、删除、锁定、解锁、添加团队成员、移除团队成员、批量编辑、批量打印。
+- demo 默认只展示一个核心批量动作：放入公海。生成新业务时只有在需求明确要求时才增加其他批量动作。
 - 批量操作数量较多时横向滚动，不换成多行按钮区。
 
 ### 业务对象新建/编辑
@@ -850,9 +869,9 @@ export const customerRows = [
 - 字段分组显示，分组标题左侧有蓝色竖条。
 - 表单字段由字段 schema 生成，字段项按 `stylePercent` 控宽。
 - 客户名称字段右上可出现“工商信息”入口。
-- 表单 label 在上方；字段多时按两列排布，地址、富文本、折叠控制等复杂字段占整行。
-- 默认核心字段后可放“展开/收起”，用于控制后续补充字段。
-- Footer 右侧按钮顺序：`保存`、可选 `保存并新建联系人`、`取消`。
+- 表单 label 在上方；字段多时按两列排布，地址、富文本、明细表格等复杂字段占整行。
+- 字段默认全部展示，不放字段隐藏切换。
+- Footer 右侧按钮顺序：`保存`、`取消`。
 - 创建大弹窗只用于新建/编辑业务对象，不用于转移、成交状态、放入公海等轻操作。
 
 客户新建代表性字段：
@@ -929,40 +948,40 @@ export const customerDetailTabs = [
 
 ```js
 export const customerDetailMock = {
-  customerId: 'C-304-002',
-  customerName: '小小亮',
-  dealStatus: 0,
+  customerId: 'C-304-001',
+  customerName: '苏州星禾精密制造',
+  dealStatus: 1,
   ownerUserName: 'admin',
-  mobile: '15566655545',
-  contactsName: '联系人0001',
+  mobile: '139****6182',
+  contactsName: '沈琳',
   stage: '初步沟通',
   digest: {
-    activityCount: 1,
-    notFollowUpDay: 42,
-    businessCount: 0,
-    businessMoney: 0,
-    contractCount: 0,
-    contractMoney: 0,
-    receivablesMoney: 0,
-    receivablesUnreceivedMoney: 0,
-    invoiceMoney: 0
+    activityCount: 2,
+    notFollowUpDay: 12,
+    businessCount: 1,
+    businessMoney: 3000,
+    contractCount: 1,
+    contractMoney: 3123,
+    receivablesMoney: 341,
+    receivablesUnreceivedMoney: 2782,
+    invoiceMoney: 2510
   },
   activities: [
     {
       type: '客户跟进记录',
-      user: 'xiaoxu',
-      content: '联系人0001 明细表格 单行文本 多行文本 网址 布尔值 单选 百分数 手机 拜访计划',
-      time: '2026-04-20 09:57:03'
+      user: 'admin',
+      content: '确认样品交付时间，需补充报价单和合同审批节点。',
+      time: '2026-06-03 09:57:03'
     },
     {
       type: '日程',
       user: 'admin',
-      content: '日程001，参与人 xiaoxu，5 分钟前提醒',
-      time: '2026-04-17 14:10:05'
+      content: '客户现场拜访，参与人 admin、林舟，5 分钟前提醒。',
+      time: '2026-06-05 14:10:05'
     }
   ],
   contacts: [
-    { contactsName: '联系人0001', mobile: '155****5545', post: '采购经理', decisionRole: '关键人' }
+    { contactsName: '沈琳', mobile: '155****5545', post: '采购经理', decisionRole: '关键人' }
   ],
   business: [
     { businessName: '智能制造扩容项目', stage: '初步沟通', money: 104000, ownerUserName: 'admin' }
@@ -980,14 +999,19 @@ export const customerDetailMock = {
 
 后台管理主交付以 `element-plus-demo` 的 `AdminShell` 为准。后台是系统组织和配置底座，生成时必须覆盖员工部门、角色权限、自定义字段、业务审批流、线索池/客户公海规则、自定义打印模板、业务参数、系统日志等核心模板能力。
 
+运行态组件边界为 `AdminShell`、`AdminEmployeeDepartment`、`AdminRolePermission`、`AdminFieldDesigner`、`AdminApprovalFlow`、`AdminPoolRuleList`、`AdminConfigListTemplate`、`AdminBusinessParamTemplate`、`AdminSystemLog`。生成时以 `adminSchema.modules` 切换模块，不要把后台字段或菜单硬编码进一次性页面。
+
 后台外壳：
 
 - 后台入口来自顶部右侧系统设置齿轮，齿轮紧邻头像左侧；顶部主导航不增加“后台管理”入口。
 - 后台态顶部使用 56px WKCRM 顶部导航，不再单独手写后台头部；左侧显示通用模块 tabs（默认 `客户` active），右侧保留系统消息、系统设置齿轮、头像。
 - 后台全局侧栏宽 `210px`，使用 WKCRM 后台路由菜单语义，不使用“企业后台 / 管理配置信息”两行描述式卡片。
 - 后台模板菜单支持父级展开和二级菜单；`客户管理` 默认展开并进入 6 个子菜单：`自定义字段设置`、`业务审批流`、`线索池规则设置`、`客户公海规则设置`、`自定义打印模板`、`业务参数设置`，不展示无关后台菜单。
-- 模板抽象优先于重复复刻：`线索池规则设置` 和 `客户公海规则设置` 共用“规则池列表模板”，通过配置切换标题、主按钮、字段和 mock 数据；`业务参数设置` 只抽左侧参数菜单和右侧配置面板范式。
-- 后台内容区背景 `#F4F5F7`，页面主容器 `height:100%; padding:20px`。
+- 模板抽象优先于重复复刻：`线索池规则设置` 和 `客户公海规则设置` 共用“规则池列表模板”，通过配置切换标题、主按钮、字段、规则详情和 mock 数据。
+- 业务审批流只抽 CRM 审批核心节点：开始、审批人、条件分支、填写、抄送；不生成自动化、通知、Webhook、定时触发等源码流程引擎能力。
+- 自定义打印模板必须覆盖列表、400px 新建关联对象弹层、300px 字段导航、类 TinyMCE 打印编辑区、480px 尺寸设置、字段 token、预览和保存操作；不接真实 TinyMCE、打印服务或文件服务。
+- 业务参数只保留五个核心配置面板：阶段流程设置、数据验证规则、产品类别设置、拥有/锁定客户数限制、公海/线索池理由设置；不复刻第三方账号、消息推送、外勤、远程配置等非模板能力。
+- 后台内容区背景 `#F5F6F9`，页面主容器 `height:100%; padding:20px`。
 - 后台页面头使用 `xr-header` 等价结构：`min-height:32px`，标题 24px / 700，右侧按钮靠右。
 - 双栏后台页使用 `240px` 本地左栏 + 右侧白色内容面板，右侧内容 `margin-left:255px`，白底、4px 圆角、轻阴影、padding 16px。
 - 后台表格继续使用 Element Plus `el-table` 和 `.p-contianer` 分页，不手写 div 表格。
@@ -998,12 +1022,14 @@ export const customerDetailMock = {
 
 布局：
 
-- 顶部：标题“员工与部门管理”、搜索员工、添加员工、更多操作。
+- 顶部：标题“员工与部门管理”、搜索员工、添加员工；右侧不生成“更多操作”下拉。
 - 左侧本地导航：240px，灰色半透明背景，内部白色圆角部门树；树区域使用相对内容容器 + 绝对定位 `el-tree`，当前部门灰底选中态必须限制在白色树内容区内，不能贴 viewport 左边或撑出白色容器。
-- 部门树节点高约 40px，当前节点使用灰色背景。
+- 部门树节点高约 40px，当前节点使用灰色背景；灰底行左右不得贴到白色树容器边缘，设置按钮仅在 hover 或当前节点显示。
 - 右侧内容：白底、4px 圆角、基础阴影、padding 16px。
 - 表格顶部显示当前部门名称和人数统计；筛选包括“包含子部门”、员工状态。
-- 勾选员工后顶部替换为 selection bar。
+- 勾选员工后顶部替换为员工页专属白底 selection bar，普通行高显示“已选中 N 项”和横向操作按钮；不要复用 CRM 列表的深色 48px selection bar。
+- 勾选操作按钮按员工页源码口径展示可用子集：停用、激活、导出选中项、编辑、重置密码、复制角色、编辑角色、调整部门。模板只对齐 UI 和 500px 小 dialog，不实现真实状态、导出、角色、部门或密码修改副作用。
+- 点击员工姓名或表格行打开 500px 右侧员工详情滑层，显示头像、姓名、上一条/下一条、编辑、更多、账号状态、创建时间、手机号（登录名）、姓名、性别、邮箱、主部门、附属部门、岗位、直属上级和角色。
 - 员工表高度按 `window.innerHeight - 290` 计算，最小 320px。
 - 部门新增/编辑使用 500px 小 dialog。
 - 员工新建/编辑表单字段两列。
@@ -1029,12 +1055,14 @@ export const employeeFields = [
 
 布局：
 
-- 左侧本地导航：角色列表，可拖拽排序，选中项蓝色浅底。
+- 左侧本地导航：角色列表，选中项蓝色浅底；当前模板不实现拖拽排序。
 - 右侧内容：tabs。
-- `角色员工` tab：搜索、提示、关联员工按钮、员工表格。
-- `角色权限` tab：横向权限类别按钮、权限树、右侧或顶部保存按钮。
-- 权限树二级节点可打开“字段授权”。
-- 数据范围可选本人、本人及下属、本部门、本部门及下属部门、全部、自定义。
+- 页面头只展示标题“角色权限管理”；新建角色入口放在左侧角色列表标题区。
+- 角色列表切换后，右侧 `角色员工`、`角色权限`、数据范围和字段授权状态都必须跟随当前角色。
+- `角色员工` tab：搜索、提示、关联员工按钮、员工表格；关联员工使用 600px dialog，本地更新当前角色员工；移除员工只更新本地 mock。
+- `角色权限` tab：横向权限类别按钮固定为“模块权限 / 数据权限”，权限树、右侧或顶部保存按钮。
+- 权限树二级 CRM 对象节点可打开“字段授权”。
+- 数据范围可选本人、本人及下属、本部门、本部门及下属部门、全部、自定义；自定义范围可选择部门并可包含下级部门。
 - 角色员工表高度按 `window.innerHeight - 300` 计算。
 - 角色权限树高度按 `window.innerHeight - 230` 计算。
 
@@ -1043,6 +1071,7 @@ export const employeeFields = [
 - 700px 小 dialog。
 - 表格树：字段名称、字段权限。
 - 权限项：可以查看、可以修改、掩码显示、设置掩码规则。
+- 勾选“可以修改”时自动勾选“可以查看”；取消“可以查看”时自动取消“可以修改”；父子字段需要联动。
 - 嵌套掩码规则使用 500px 小 dialog。
 
 ### 自定义字段
@@ -1062,6 +1091,8 @@ export const employeeFields = [
 - 中间画布：900px 白色卡片，顶部“编辑{模块}字段”，右侧保存/返回。
 - 右侧设置面板：280px，不随视口压缩。
 - 字段库两列卡片，白底、边框、4px 圆角，hover 变主蓝。
+- 点击字段库项可向当前模块画布新增字段；点击画布字段后，右侧可编辑标识名、说明文字、字段占比和必填。
+- 保存只写回当前模块本地 mock 字段并更新时间；不实现真实拖拽排序、字段发布 API 或后端持久化。
 - 字段设计器三栏总宽较大时允许内部横向滚动，但不要压缩三栏宽度。
 
 字段类型：
@@ -1117,10 +1148,42 @@ export const fieldTypes = [
 创建/编辑页：
 
 - 全屏流程配置页面。
-- 顶部步骤：`1.配置基础信息`、`2.配置流程`。
-- 右侧：发布、关闭。
-- 内容包含基础信息表单和审批流画布。
+- 顶部步骤按源码只保留：`1.设置基础信息`、`2.配置流程`。
+- 右侧：发布、关闭；关闭只退出全屏配置页，不写入本地审批流列表。
+- `设置基础信息` 页内先展示基础信息表单，再展示高级配置 section；高级配置不是第三个顶层步骤。
+- `配置流程` 页按源码 `ApprovalFlow` 画布展示缩放控件、发起人节点、审批节点、条件分支、抄送节点、已有填写展示节点和流程结束。
+- 条件分支必须按源码 `WkConditionWrap` 层级渲染：条件卡横向分支，分支内审批/抄送/填写节点在条件卡下方纵向同轴排列；不要把条件卡、审批卡和抄送卡混在同一横向层。
+- 节点颜色按源码：发起人和填写为蓝色 `#0052CC`，审批为橙色 `#FF991F`，抄送为灰色 `#6B778C`，条件卡只保留绿色标题文字。
+- 节点新增使用源码式 `+` popover，只提供审批人、分支、抄送人和复制后的粘贴；不使用左侧节点类型 palette。
+- 流程画布节点模板只保留发起人、审批人、条件分支、已有填写展示节点、抄送。
+- 流程画布支持节点选中和 500px 右侧设置 drawer，用于本地编辑审批人、条件和抄送的核心字段。
+- 新建、编辑、复制、发布、启用/停用和删除只更新本地审批流列表。
 - CRM 审批对象包括合同、回款、发票、报价单。
+- 不实现真实流程引擎、自动化触发、Webhook、通知或后端审批 API。
+
+### 线索池 / 客户公海规则
+
+- 保留两个后台菜单入口，因为业务语义不同；实现上共用同一个规则池模板组件。
+- 列表字段、主按钮、数量字段和 mock 数据由 schema 区分线索池与客户公海。
+- 核心闭环包括列表、当前规则详情、新建/编辑规则弹层、转移弹层、启用/停用、删除。
+- 新建规则弹层包含基本信息和规则设置：管理员、成员、领取限制、领取规则、回收规则和可见字段。
+- 新建、编辑、启停、删除只更新对应池的本地 mock 列表；转移 dialog 只记录 UI 状态并关闭，不迁移真实线索或客户数据。
+
+### 自定义打印模板
+
+- 列表页保留模板名称、关联对象、创建时间、创建人、更新时间和 250px 操作列。
+- 新建使用 400px 弹层选择模板名称和关联对象，再进入编辑器；编辑名称弹层只显示模板名称；复制、删除和保存只更新本地 mock。
+- 编辑器采用源码结构级布局：顶部尺寸设置/预览/保存/返回，左侧 300px 对象字段与阶段树导航，右侧灰底居中的白色类 TinyMCE 打印编辑区。
+- 尺寸设置使用 480px dialog，包含纸张大小、宽高、页边距和上/下/左/右 mm 输入；打印模板只表达生成结构，不实现真实富文本编辑、打印渲染或文件上传。
+
+### 业务参数
+
+- 使用 240px 本地菜单 + 右侧配置面板。
+- 菜单固定为阶段流程设置、数据验证规则、产品类别设置、拥有/锁定客户数限制、公海/线索池理由设置。
+- 阶段流程设置使用筛选 + 表格 + 阶段标签；数据验证规则使用模块筛选 + 规则表；产品类别使用分类表；客户数限制使用开关 + 限制规则表；理由设置使用可编辑原因分组。
+- 阶段流程、验证规则、产品类别、客户数限制使用 500px 小 dialog 做新增/编辑；启停、删除和开关只更新本地状态。
+- 理由设置支持必填开关、编辑原因、添加原因和删除原因，保存只记录本地状态。
+- 不生成第三方账号、消息推送、外勤打卡、远程配置和完整业务参数全集。
 
 ### 系统日志
 
@@ -1145,13 +1208,15 @@ export const fieldTypes = [
 
 生成代码时优先读取 `element-plus-demo/src/mock/schema.js`。该文件是 mock schema 的统一出口，导出 `crmSchema`、`adminSchema`、`schemaVersion`、`fieldTypeMap`、`requiredSchemaKeys`。`crm.js` 和 `admin.js` 继续保留 demo 组件所需的原始导出，但 AI Studio 和二开生成工具应以 `schema.js` 为入口。
 
+客户字段以 `element-plus-demo/src/mock/crmFieldModel.js` 为字段模型优先入口；列表列、新建字段组、详情基础资料、高级筛选字段和后台字段画布都应从该模型派生。生成新业务对象时先替换字段模型和精炼 mock，再让组件消费派生结果。
+
 ```js
 import { crmSchema, adminSchema, fieldTypeMap } from './mock/schema'
 ```
 
 ### CRMObjectTemplate schema
 
-CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保真样板；线索、联系人、商机、合同是同结构复用样板。
+CRM 业务对象必须由 `crmSchema.objects[type]` 驱动，底层数据来自 `crmObjectTemplates[type]`。当前内置对象只有 `customer`、`leads`、`contacts`、`business`、`contract`；客户是最高保真样板，线索、联系人、商机、合同是同结构复用样板。
 
 每个对象必须包含：
 
@@ -1164,7 +1229,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 | `idField` | 主键字段，控制行唯一性和详情数据绑定 |
 | `searchPlaceholder` | 搜索框 placeholder |
 | `sceneList` | 场景 tabs |
-| `fieldList` | 列表业务字段列，不包含 selection、电话、星标等固定列 |
+| `fieldList` | 列表业务字段列，不包含 selection、星标等固定列 |
 | `rows` | 列表模拟数据 |
 | `stageFlow` | 阶段视图数据 |
 | `cardRows` | 卡片视图数据 |
@@ -1207,19 +1272,20 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 | `structure` / `tree-select` | 部门树选择 |
 | `map_address` | 地址级联 + 详细地址输入 |
 | `rich_text_format` | 富文本占位工具条 + 内容区 |
-| `data_collapse` | 创建弹窗展开/收起控制，不生成普通输入控件 |
 
 ### CRM 数据生成规则
 
-- 生成列表时，固定列由模板提供：selection、电话呼叫、星标、主字段。`fieldList` 只负责后续业务列。
-- 生成新建/编辑时，只读取 `createFieldGroups`，并按 `stylePercent` 排列字段；`data_collapse` 只控制折叠，不渲染输入框。
+- 生成列表时，固定列由模板提供：selection、星标、主字段。`fieldList` 只负责后续业务列。
+- 生成列表时保留新建、查重、导入、导出、高级筛选、搜索、场景 tabs、selection、收藏星标、主字段和分页；不要生成非核心分析入口、额外固定动作列或第二套筛选入口。
+- 生成新建/编辑时，只读取 `createFieldGroups`，并按 `stylePercent` 排列字段；字段默认全部展示，不生成字段隐藏切换。
 - 生成详情时，只读取当前 tab 对应数据，不要把活动、详细资料、联系人、附件、操作记录堆叠在同一个页面里。
+- 生成详情时，编辑按钮必须打开同一个 900px 创建弹层的编辑模式，并回填当前 mock 数据；活动区只保留跟进记录和动态。
 - `rows` 中每条数据必须包含对象的 `idField`、`mainField` 和 `__rowUid`；空字段保留空单元格，不用标签或卡片补齐。
 - `detailData.baseInfoGroups` 使用分组只读字段，字段值必须落在 32px `value-box` 中。
 
 ### Admin schema
 
-后台模板由 `adminSchema.modules` 驱动，必须覆盖五类核心模块：
+后台模板由 `adminSchema.modules` 驱动，必须覆盖后台核心模块：
 
 | Key | 模块 |
 | --- | --- |
@@ -1227,6 +1293,10 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 | `rolePermission` | 角色权限管理 |
 | `customField` | 自定义字段设置 |
 | `approvalFlow` | 业务审批流 |
+| `leadsPoolRule` | 线索池规则设置 |
+| `customerPoolRule` | 客户公海规则设置 |
+| `printTemplate` | 自定义打印模板 |
+| `businessParam` | 业务参数设置 |
 | `systemLog` | 系统日志 |
 
 每个后台模块必须包含：
@@ -1247,7 +1317,10 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 - 员工部门使用 `departmentTree + employeeFields + employeeRows`。
 - 角色权限使用 `roleList + roleUserRows + permissionTree + fieldAuthRows`。
 - 自定义字段使用 `fieldTypeLib + designerFields + fieldSettingFields`。
-- 审批流使用 `approvalFields + approvalRows + flowCanvas`。
+- 审批流使用 `approvalFields + approvalRows + baseFields + nodePalette + canvasNodes + advancedFields`。
+- 线索池和客户公海使用同一个规则池模板，分别消费 `poolRuleTemplates.leads` 和 `poolRuleTemplates.customer`；列表点击池名称打开源码式大 `SlideView` 详情，新建/编辑使用 `XrCreate` 式全屏创建页，转移使用 450px 单选择 dialog。
+- 自定义打印模板使用 `printTemplateConfig.createFields + editor` 表达新建和编辑器壳。
+- 业务参数使用 `businessParamTemplate.panels[].type` 分发五类核心配置面板。
 - 系统日志使用 `logFilters + systemLogFields + systemLogRows + detailData`。
 
 ### Schema 反模式
@@ -1314,7 +1387,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 
 必须遵守：
 - 表格视图使用 Element Plus el-table border，不用 div 表格。
-- 主表格表头和数据行都是 32px，固定列为 selection、电话呼叫、星标、主字段。
+- 主表格表头和数据行都是 32px，固定列为 selection、星标、主字段。
 - selection bar 为 48px 深灰蓝，只在勾选后接管表头状态。
 - 新建/编辑是 900px 创建大弹层，不是 el-dialog。
 - 放入公海小弹框是 450px el-dialog。
@@ -1337,7 +1410,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 生成目标：
 - 标题为“客户管理”，主按钮为“新建客户”，搜索框为“客户名称/手机/电话”。
 - 列表包含客户名称、电话、客户来源、手机、邮箱、网址、客户行业、客户级别、下次联系时间等字段。
-- 新建客户使用 900px 创建大弹层，包含基本信息分组、工商信息入口、展开/收起、label top 表单。
+- 新建客户使用 900px 创建大弹层，包含基本信息分组、工商信息入口、label top 表单，字段默认全部展示。
 - 勾选后只展示一个批量动作：放入公海。
 - 详情保留活动、详细资料、联系人、附件、操作记录五个 tabs。
 
@@ -1412,11 +1485,13 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 - 后台外壳使用 56px WKCRM 顶部导航，右上角系统设置齿轮进入后台；顶部仍展示通用模块 tabs，左侧为 210px 后台模板菜单。
 - 页面内部使用 240px 部门树 + 右侧员工表格。
 - 部门树数据来自 tree；员工表字段来自 fields；员工数据来自 rows。
-- 顶部操作包含新建员工、创建部门等 actions。
+- 顶部操作包含新建员工和创建部门；不要生成员工页头部“更多操作”下拉。
+- 勾选员工后使用白底普通行高操作条，不要复用 CRM 深色 48px selection bar；批量按钮只需打开 500px 小 dialog 作为 UI 表达。
+- 点击员工姓名或行打开 500px 右侧员工详情滑层，展示员工状态、创建时间和基础字段。
 - 创建部门 dialog 宽 500px，字段来自 dialogs.department.fields。
 
 验收：
-- 本地导航 240px，员工表高度使用 layout.tableOffset，表格使用 Element Plus el-table。
+- 本地导航 240px，部门树当前行在白色容器内且不贴边，员工表高度使用 layout.tableOffset，表格使用 Element Plus el-table。
 ```
 
 ### 角色权限
@@ -1428,13 +1503,15 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 
 生成目标：
 - 左侧角色列表，右侧包含“角色员工 / 角色权限”tabs。
-- 角色员工使用 roleUserRows 和表格字段。
-- 角色权限使用 permissionTree。
+- 切换角色后，角色员工、模块权限、数据权限和字段授权状态都跟随当前角色。
+- 角色员工使用当前角色的 userIds 派生员工表，搜索只过滤当前角色员工；关联员工使用 600px dialog，本地更新当前角色 userIds。
+- 角色权限使用 permissionTree；横向权限类别固定为“模块权限 / 数据权限”。
+- 数据权限支持本人、本人及下属、本部门、本部门及下属部门、全部、自定义部门。
 - 字段授权 dialog 宽 700px，掩码规则 dialog 宽 500px。
 - 操作来自 actions，不额外发明无关按钮。
 
 验收：
-- 本地角色列表宽 240px，员工表和权限树高度使用 layout.tableOffset / layout.treeOffset。
+- 本地角色列表宽 240px，员工表和权限树高度使用 layout.tableOffset / layout.treeOffset；角色切换必须驱动右侧状态；字段授权查看/修改/掩码规则联动必须可用。
 ```
 
 ### 自定义字段
@@ -1464,11 +1541,60 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 生成目标：
 - 列表字段来自 fields，数据来自 rows，筛选项来自 filters。
 - 操作列包含编辑、删除、启用停用、复制并新建等 actions。
-- 新建审批流程进入全屏流程配置模板，包含基础信息、审批流程、流程画布和高级配置。
+- 新建审批流程进入全屏流程配置模板，顶部只保留基础信息和配置流程两步；高级配置嵌入基础信息页内。
 
 验收：
 - 表格高度使用 layout.tableOffset。
 - 流程画布只表达结构，不接真实后端。
+```
+
+### 线索池 / 客户公海规则
+
+```text
+生成 WKCRM 后台线索池规则或客户公海规则页面。
+
+读取 adminSchema.modules.leadsPoolRule 或 adminSchema.modules.customerPoolRule。
+
+生成目标：
+- 两个入口复用同一个规则池模板组件。
+- 标题、主按钮、字段、数量列和表单字段由对应 schema 区分。
+- 支持当前规则详情、新建/编辑、启停、删除和转移 dialog。
+
+限制：
+- 所有操作只更新当前池的本地 mock 状态。
+- 转移 dialog 只适配 UI，不迁移真实线索或客户数据。
+```
+
+### 自定义打印模板
+
+```text
+生成 WKCRM 后台自定义打印模板页面。
+
+读取 adminSchema.modules.printTemplate。
+
+生成目标：
+- 列表展示模板名称、关联对象、创建时间、创建人、更新时间和操作列。
+- 新建/编辑名称/复制/删除使用本地 mock 闭环。
+- 新建后进入源码结构级编辑器，包含 300px 字段导航、阶段树、类 TinyMCE 打印编辑区、480px 尺寸设置、预览和保存。
+
+限制：
+- 不接富文本、真实打印、上传或文件服务。
+```
+
+### 业务参数
+
+```text
+生成 WKCRM 后台业务参数设置页面。
+
+读取 adminSchema.modules.businessParam。
+
+生成目标：
+- 左侧 240px 参数菜单固定为五个面板。
+- 阶段流程、验证规则、产品类别、客户数限制使用 500px 小 dialog 新增/编辑。
+- 启停、删除、开关和理由设置只更新本地状态。
+
+限制：
+- 不生成第三方账号、消息推送、外勤打卡、远程配置或完整参数全集。
 ```
 
 ### 系统日志
@@ -1515,7 +1641,7 @@ CRM 业务对象必须由 `crmObjectTemplates[type]` 驱动。客户是最高保
 CRM UI：
 - CRM 主表格是否为 Element Plus el-table border。
 - 表头和数据行是否为 32px。
-- 固定列是否为 selection、电话呼叫、星标、主字段。
+- 固定列是否为 selection、星标、主字段。
 - selection bar 是否为 48px，是否只在勾选后显示。
 - 新建/编辑是否为 900px 创建大弹层，而不是 el-dialog。
 - 放入公海是否为 450px el-dialog。
@@ -1561,7 +1687,7 @@ CRM UI：
 - CRM 详情必须使用右侧滑层，不跳普通全页。
 - 详情必须包含活动、详细资料、联系人、附件、操作记录五个核心 tabs，且内容一一对应切换。
 - 客户列表必须保留表格网格、空字段占位、固定列、真实分页和高密度筛选区。
-- 客户详情必须保留蓝色关闭把手、左侧 tab 轨道、圆点轨道、客户阶段、待处理及逾期、活动流和客户摘要。
+- 客户详情必须保留蓝色关闭把手、左侧 tab 轨道、圆点轨道、客户阶段、活动流和客户摘要；活动流只展示跟进记录和动态。
 - 后台必须覆盖员工部门、角色权限、自定义字段、审批流、系统日志。
 - 自定义字段必须表现为三栏字段设计器，不简化为普通表单。
 

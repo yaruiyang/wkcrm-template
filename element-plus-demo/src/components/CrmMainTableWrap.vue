@@ -27,7 +27,7 @@
           data-section="table-view"
           :data="rows"
           :height="tableHeight"
-          :row-height="sourceDimensions.tableRowHeight"
+          :row-height="wkcrmUiDimensions.tableRowHeight"
           :show-header="showHeader"
           row-key="__rowUid"
           border
@@ -38,26 +38,13 @@
           <el-table-column type="selection" fixed width="40" align="center" />
           <el-table-column fixed width="40" align="center" header-align="center">
             <template #header>
-              <el-icon class="call-head"><Phone /></el-icon>
-            </template>
-            <template #default="{ row }">
-              <el-button
-                v-if="row.callShow"
-                class="wk-call-btn"
-                type="primary"
-                circle
-                @click.stop
-              >
-                <el-icon><Phone /></el-icon>
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column fixed width="40" align="center" header-align="center">
-            <template #header>
               <el-icon class="focus-icon is-disabled"><Star /></el-icon>
             </template>
             <template #default="{ row }">
-              <el-icon :class="['focus-icon', { active: row.star }]">
+              <el-icon
+                :class="['focus-icon', 'is-clickable', { active: row.star }]"
+                @click.stop="$emit('favorite-toggle', row)"
+              >
                 <StarFilled v-if="row.star" />
                 <Star v-else />
               </el-icon>
@@ -105,7 +92,7 @@
             layout="prev, pager, next, sizes, total, jumper"
             :page-sizes="[15, 30, 60, 100]"
             :pager-count="5"
-            :total="304"
+            :total="rows.length"
           />
         </div>
       </div>
@@ -115,10 +102,10 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { Phone, Star, StarFilled } from '@element-plus/icons-vue'
+import { Star, StarFilled } from '@element-plus/icons-vue'
 import CrmCardView from './CrmCardView.vue'
 import CrmStageView from './CrmStageView.vue'
-import { sourceDimensions } from '../contracts/wkcrmSourceContract'
+import { wkcrmUiDimensions } from '../constants/wkcrmUiTokens'
 
 const props = defineProps({
   rows: {
@@ -155,7 +142,7 @@ const props = defineProps({
   }
 })
 
-defineEmits(['selection-change', 'open-detail'])
+defineEmits(['selection-change', 'open-detail', 'favorite-toggle'])
 
 const tableRef = ref(null)
 const currentPage = ref(1)
@@ -163,7 +150,7 @@ const pageSize = ref(15)
 const showHeader = computed(() => props.selectedRows.length === 0)
 const mainTableStyle = computed(() => {
   if (props.viewType === '2' || props.viewType === '3') {
-    return { height: `${props.tableHeight + sourceDimensions.stageViewExtraHeight}px` }
+    return { height: `${props.tableHeight + wkcrmUiDimensions.stageViewExtraHeight}px` }
   }
   return {}
 })

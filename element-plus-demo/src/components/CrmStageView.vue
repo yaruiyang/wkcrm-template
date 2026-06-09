@@ -20,7 +20,7 @@
               @click="$emit('open-detail', row)"
             >
               <div class="title text-one-line">
-                <span class="module-icon">▦</span>
+                <el-icon class="module-icon"><Grid /></el-icon>
                 <span class="can-visit--underline">{{ row[mainField] }}</span>
               </div>
               <div class="main-info">
@@ -46,6 +46,8 @@
 </template>
 
 <script setup>
+import { Grid } from '@element-plus/icons-vue'
+
 defineProps({
   stageFlow: {
     type: Object,

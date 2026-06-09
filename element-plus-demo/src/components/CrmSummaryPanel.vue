@@ -11,7 +11,7 @@
         class="wk-section-item summary-item"
       >
         <div class="item-label summary-label">
-          {{ item.title }}<span v-if="item.help" class="summary-help">?</span>
+          {{ item.title }}<el-icon v-if="item.help" class="summary-help"><QuestionFilled /></el-icon>
         </div>
         <div class="item-content summary-value">{{ item.value }}<span>{{ item.unit }}</span></div>
       </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ArrowDown, QuestionFilled } from '@element-plus/icons-vue'
 
 defineProps({
   detail: {

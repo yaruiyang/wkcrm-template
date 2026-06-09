@@ -4,11 +4,12 @@ import {
   operations,
   poolDialogOptions,
   tableStyleObj,
+  uiProfile,
   viewTypes
 } from './crm.js'
 import { adminSchema } from './admin.js'
 
-export const schemaVersion = 'p5.1'
+export const schemaVersion = 'p5.2'
 
 export const fieldTypeMap = {
   text: { label: '单行文本', element: 'el-input' },
@@ -29,8 +30,7 @@ export const fieldTypeMap = {
   rich_text_format: { label: '富文本', element: 'rich-text-placeholder' },
   pic: { label: '图片', element: 'el-upload' },
   file: { label: '附件', element: 'el-upload' },
-  customer_relations: { label: '客户关系', element: 'el-select' },
-  data_collapse: { label: '折叠控制', element: 'collapse-toggle' }
+  customer_relations: { label: '客户关系', element: 'el-select' }
 }
 
 export const requiredSchemaKeys = {
@@ -85,6 +85,7 @@ export const crmSchema = {
   objects: crmObjectTemplates,
   objectList: crmObjectTemplateList,
   tableStyleObj,
+  uiProfile,
   viewTypes,
   operations,
   poolDialogOptions

@@ -7,7 +7,7 @@
       <div class="navbar-left">
         <div class="company-btn" @click="openCustomerModule">
           <span class="brand-mark logo">WK</span>
-          <span class="label text-one-line">YOUNG</span>
+          <span class="label text-one-line">星禾科技</span>
           <i class="el-icon-arrow-down navbar-company__arrow" aria-hidden="true" />
         </div>
         <div class="menus">

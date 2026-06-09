@@ -6,13 +6,21 @@
     <CrmDetailMenuLayout v-model="activeTab" :tabs="tabs">
       <template #header>
         <div class="wmd-header">
-          <CrmDetailHeaderCard :detail="detail" />
+          <CrmDetailHeaderCard
+            :detail="detail"
+            @edit="$emit('edit')"
+            @favorite-toggle="$emit('favoriteToggle')"
+          />
         </div>
         <CrmStageRecords :detail="detail" />
       </template>
 
       <template #body="{ tab }">
-        <CrmActivityPanel v-if="tab.name === 'activity'" :detail="detail" />
+        <CrmActivityPanel
+          v-if="tab.name === 'activity'"
+          :detail="detail"
+          @follow-create="$emit('followCreate', $event)"
+        />
         <CrmReadonlyInfo v-else-if="tab.name === 'fields'" :groups="detail.baseInfoGroups" />
         <CrmRelativeContacts v-else-if="tab.name === 'contacts'" :detail="detail" />
         <CrmRelativeFiles v-else-if="tab.name === 'files'" :detail="detail" />
@@ -54,7 +62,7 @@ const props = defineProps({
   }
 })
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue', 'edit', 'favoriteToggle', 'followCreate'])
 
 const activeTab = ref('activity')
 

@@ -1,3 +1,9 @@
+import {
+  customerFieldModel,
+  createDesignerFieldsFromModel,
+  supportedCustomerFieldTypeLib
+} from './crmFieldModel.js'
+
 export const adminSections = [
   { key: 'employee', label: '员工与部门管理', icon: 'icon-s-seas-line', description: '组织架构与成员账号' },
   { key: 'role', label: '角色权限管理', icon: 'icon-employees-line', description: '角色、员工和数据权限' },
@@ -33,21 +39,29 @@ export const adminManageMenu = [
 export const departmentTree = [
   {
     deptId: 'root',
-    name: '子二公司-admin',
+    name: '总公司',
+    type: 1,
+    companyId: 'current-company',
     children: [
       {
-        deptId: 'dept-young',
-        name: 'YOUNG',
+        deptId: 'dept-sales',
+        name: '销售中心',
+        type: 2,
+        companyId: 'current-company',
         children: [
           {
-            deptId: 'dept-admin',
-            name: 'admin',
+            deptId: 'dept-east',
+            name: '华东销售组',
+            type: 2,
+            companyId: 'current-company',
             children: [
               {
-                deptId: 'dept-123',
-                name: '123',
+                deptId: 'dept-key-account',
+                name: '大客户组',
+                type: 2,
+                companyId: 'current-company',
                 children: [
-                  { deptId: 'dept-321', name: '321' }
+                  { deptId: 'dept-success', name: '客户成功部', type: 2, companyId: 'current-company' }
                 ]
               }
             ]
@@ -64,225 +78,126 @@ export const employeeRows = [
     sokingStatus: '未开启',
     status: '已激活',
     realname: 'admin',
+    username: '15639390000',
     userIdentity: 0,
-    activeModuleList: '',
-    mobile: '15638733939',
+    activeModuleList: 'CRM,后台管理',
+    mobile: '156****3939',
     wxBindStatus: '未绑定',
     sex: '',
-    email: '693685409@qq...',
-    deptName: 'admin',
+    email: 'admin@wkcrm.demo',
+    deptName: '总公司',
     parentDeptName: '',
-    post: '标准岗位'
+    subsidiaryDeptName: '',
+    parentName: '',
+    roleName: '超级管理员',
+    post: '标准岗位',
+    createTime: '2026-05-16 09:12',
+    img: ''
   },
   {
     userId: 'u-002',
     sokingStatus: '未开启',
     status: '已激活',
-    realname: 'yang2',
-    activeModuleList: 'CRM,进销存',
-    mobile: '15638733937',
+    realname: '林舟',
+    username: '13961820000',
+    userIdentity: 1,
+    activeModuleList: 'CRM',
+    mobile: '139****6182',
     wxBindStatus: '未绑定',
     sex: '',
-    email: '',
-    deptName: 'admin',
+    email: 'linzhou@wkcrm.demo',
+    deptName: '销售中心',
     parentDeptName: '',
-    post: ''
+    subsidiaryDeptName: '',
+    parentName: 'admin',
+    roleName: '销售主管',
+    post: '销售主管',
+    createTime: '2026-05-18 10:26',
+    img: ''
   },
   {
     userId: 'u-003',
     sokingStatus: '未开启',
     status: '已激活',
-    realname: 'yang1',
-    activeModuleList: '',
-    mobile: '15638733938',
+    realname: '张敏',
+    username: '15555450000',
+    userIdentity: 1,
+    activeModuleList: 'CRM',
+    mobile: '155****5545',
     wxBindStatus: '未绑定',
     sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
+    email: 'zhangmin@wkcrm.demo',
+    deptName: '华东销售组',
+    parentDeptName: '销售中心',
+    subsidiaryDeptName: '销售中心',
+    parentName: '林舟',
+    roleName: '销售人员',
+    post: '客户经理',
+    createTime: '2026-05-19 14:48',
+    img: ''
   },
   {
     userId: 'u-004',
     sokingStatus: '未开启',
     status: '已激活',
-    realname: 'yang3',
-    activeModuleList: '',
-    mobile: '15638733936',
+    realname: '陈启',
+    username: '18668030000',
+    userIdentity: 1,
+    activeModuleList: 'CRM,办公',
+    mobile: '186****6803',
     wxBindStatus: '未绑定',
     sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
+    email: 'chenqi@wkcrm.demo',
+    deptName: '大客户组',
+    parentDeptName: '华东销售组',
+    subsidiaryDeptName: '华东销售组',
+    parentName: '林舟',
+    roleName: '销售人员',
+    post: '大客户经理',
+    createTime: '2026-05-21 11:08',
+    img: ''
   },
   {
     userId: 'u-005',
     sokingStatus: '未开启',
     status: '已激活',
-    realname: '测试权限',
-    activeModuleList: 'CRM,进销存',
-    mobile: '13366667778',
+    realname: '周宁',
+    username: '13890410000',
+    userIdentity: 1,
+    activeModuleList: 'CRM',
+    mobile: '138****9041',
     wxBindStatus: '未绑定',
     sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
+    email: 'zhouning@wkcrm.demo',
+    deptName: '客户成功部',
+    parentDeptName: '大客户组',
+    subsidiaryDeptName: '大客户组',
+    parentName: '陈启',
+    roleName: '客户成功',
+    post: '客户成功',
+    createTime: '2026-05-23 16:35',
+    img: ''
   },
   {
     userId: 'u-006',
     sokingStatus: '未开启',
-    status: '已激活',
-    realname: '777',
-    activeModuleList: '',
-    mobile: '15638733931',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-007',
-    sokingStatus: '未开启',
-    status: '已激活',
-    realname: '马田',
-    activeModuleList: '',
-    mobile: '13366667777',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-008',
-    sokingStatus: '未开启',
-    status: '已激活',
-    realname: 'xiaoxu',
-    activeModuleList: 'CRM',
-    mobile: '18638136803',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-009',
-    sokingStatus: '未开启',
-    status: '已激活',
-    realname: 'cg',
-    activeModuleList: '',
-    mobile: '1880000000',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-010',
-    sokingStatus: '未开启',
-    status: '已激活',
-    realname: 'lc',
-    activeModuleList: '',
-    mobile: '1880000001',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-011',
-    sokingStatus: '未开启',
-    status: '已激活',
-    realname: 'xiaoxu1',
-    activeModuleList: 'CRM',
-    mobile: '18638136804',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-012',
-    sokingStatus: '未开启',
     status: '未激活',
-    realname: '123',
+    realname: '赵然',
+    username: '13722060000',
+    userIdentity: 1,
     activeModuleList: '',
-    mobile: '123123123111',
+    mobile: '137****2206',
     wxBindStatus: '未绑定',
     sex: '',
-    email: '123123123111',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-013',
-    sokingStatus: '未开启',
-    status: '未激活',
-    realname: '1111',
-    activeModuleList: '',
-    mobile: '15638733901',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-014',
-    sokingStatus: '未开启',
-    status: '未激活',
-    realname: '12311',
-    activeModuleList: '',
-    mobile: '18729953211',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-015',
-    sokingStatus: '未开启',
-    status: '未激活',
-    realname: '1231',
-    activeModuleList: '',
-    mobile: '15638739366',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
-  },
-  {
-    userId: 'u-016',
-    sokingStatus: '未开启',
-    status: '未激活',
-    realname: 'yang4',
-    activeModuleList: '',
-    mobile: '15638739367',
-    wxBindStatus: '未绑定',
-    sex: '',
-    email: '',
-    deptName: 'admin',
-    parentDeptName: '',
-    post: ''
+    email: 'zhaoran@wkcrm.demo',
+    deptName: '客户成功部',
+    parentDeptName: '大客户组',
+    subsidiaryDeptName: '大客户组',
+    parentName: '周宁',
+    roleName: '销售人员',
+    post: '试用员工',
+    createTime: '2026-05-27 09:40',
+    img: ''
   }
 ]
 
@@ -301,11 +216,71 @@ export const employeeFields = [
 ]
 
 export const roleList = [
-  { roleId: 'r-admin', roleName: '超级管理员', remark: 'admin', employeeCount: 1 },
-  { roleId: 'r-sales-manager', roleName: '销售主管', remark: 'crm', employeeCount: 8 },
-  { roleId: 'r-sales', roleName: '销售人员', remark: 'crm', employeeCount: 28 },
-  { roleId: 'r-finance', roleName: '财务角色', remark: 'finance', employeeCount: 5 },
-  { roleId: 'r-service', roleName: '客户成功', remark: 'crm', employeeCount: 12 }
+  {
+    roleId: 'r-admin',
+    roleName: '超级管理员',
+    remark: 'admin',
+    employeeCount: 1,
+    userIds: ['u-001'],
+    rules: {
+      module: ['crm', 'crm-customer', 'crm-customer-read', 'crm-customer-save', 'crm-customer-delete', 'crm-business', 'crm-business-read', 'crm-business-save', 'system', 'system-employee', 'system-employee-read', 'system-employee-save']
+    },
+    dataType: 5,
+    deptList: [],
+    isNeedChild: 0
+  },
+  {
+    roleId: 'r-sales-manager',
+    roleName: '销售主管',
+    remark: 'crm',
+    employeeCount: 2,
+    userIds: ['u-002', 'u-003'],
+    rules: {
+      module: ['crm-customer-read', 'crm-customer-save', 'crm-business-read', 'crm-business-save']
+    },
+    dataType: 2,
+    deptList: [],
+    isNeedChild: 0
+  },
+  {
+    roleId: 'r-sales',
+    roleName: '销售人员',
+    remark: 'crm',
+    employeeCount: 2,
+    userIds: ['u-003', 'u-004'],
+    rules: {
+      module: ['crm-customer-read', 'crm-business-read']
+    },
+    dataType: 1,
+    deptList: [],
+    isNeedChild: 0
+  },
+  {
+    roleId: 'r-finance',
+    roleName: '财务角色',
+    remark: 'finance',
+    employeeCount: 1,
+    userIds: ['u-006'],
+    rules: {
+      module: ['crm-business-read']
+    },
+    dataType: 3,
+    deptList: [],
+    isNeedChild: 0
+  },
+  {
+    roleId: 'r-service',
+    roleName: '客户成功',
+    remark: 'crm',
+    employeeCount: 1,
+    userIds: ['u-005'],
+    rules: {
+      module: ['crm-customer-read']
+    },
+    dataType: 0,
+    deptList: [{ deptId: 'dept-cs', name: '客户成功部' }],
+    isNeedChild: 1
+  }
 ]
 
 export const roleUserRows = employeeRows.map(item => ({
@@ -314,10 +289,8 @@ export const roleUserRows = employeeRows.map(item => ({
 }))
 
 export const rolePermissionMenus = [
-  { index: 'data', label: '数据权限', type: 'range' },
-  { index: 'crm', label: '客户管理', type: 'tree' },
-  { index: 'system', label: '系统管理', type: 'tree' },
-  { index: 'finance', label: '财务管理', type: 'tree' }
+  { index: 'module', label: '模块权限', type: 'tree' },
+  { index: 'dataRange', label: '数据权限', type: 'data' }
 ]
 
 export const permissionTree = [
@@ -367,18 +340,34 @@ export const fieldAuthRows = [
   {
     id: 'base',
     name: '基本信息',
+    operateType: 1,
+    type: 0,
+    fieldName: 'base',
+    canCheck: true,
+    canEdit: true,
+    canMask: false,
+    tableMask: false,
+    viewMask: false,
     childField: [
-      { id: 'customerName', name: '客户名称', canCheck: true, canEdit: true, canMask: false },
-      { id: 'mobile', name: '手机', canCheck: true, canEdit: true, canMask: true },
-      { id: 'telephone', name: '电话', canCheck: true, canEdit: false, canMask: true }
+      { id: 'customerName', parentId: 'base', name: '客户名称', operateType: 1, type: 1, fieldName: 'customerName', canCheck: true, canEdit: true, canMask: false, tableMask: false, viewMask: false },
+      { id: 'mobile', parentId: 'base', name: '手机', operateType: 1, type: 7, fieldName: 'mobile', canCheck: true, canEdit: true, canMask: true, tableMask: true, viewMask: true },
+      { id: 'telephone', parentId: 'base', name: '电话', operateType: 1, type: 7, fieldName: 'telephone', canCheck: true, canEdit: false, canMask: true, tableMask: true, viewMask: false }
     ]
   },
   {
     id: 'deal',
     name: '业务信息',
+    operateType: 1,
+    type: 0,
+    fieldName: 'deal',
+    canCheck: true,
+    canEdit: false,
+    canMask: false,
+    tableMask: false,
+    viewMask: false,
     childField: [
-      { id: 'ownerUserName', name: '负责人', canCheck: true, canEdit: false, canMask: false },
-      { id: 'nextTime', name: '下次联系时间', canCheck: true, canEdit: true, canMask: false }
+      { id: 'ownerUserName', parentId: 'deal', name: '负责人', operateType: 2, type: 8, fieldName: 'ownerUserName', canCheck: true, canEdit: false, canMask: false, tableMask: false, viewMask: false },
+      { id: 'nextTime', parentId: 'deal', name: '下次联系时间', operateType: 1, type: 13, fieldName: 'nextTime', canCheck: true, canEdit: true, canMask: false, tableMask: false, viewMask: false }
     ]
   }
 ]
@@ -391,34 +380,9 @@ export const customFieldModules = [
   { label: 6, icon: 'wk wk-contract', name: '合同', updateTime: '2026-05-22 11:08' }
 ]
 
-export const fieldTypeLib = [
-  { formType: 'text', name: '单行文本', icon: 'wk wk-icon-field-text' },
-  { formType: 'textarea', name: '多行文本', icon: 'wk wk-icon-field-textarea' },
-  { formType: 'select', name: '单选', icon: 'wk wk-icon-field-select' },
-  { formType: 'checkbox', name: '多选', icon: 'wk wk-icon-field-checkbox' },
-  { formType: 'number', name: '数字', icon: 'wk wk-icon-field-number' },
-  { formType: 'money', name: '货币', icon: 'wk wk-icon-field-money' },
-  { formType: 'mobile', name: '手机', icon: 'wk wk-icon-field-mobile' },
-  { formType: 'date', name: '日期', icon: 'wk wk-icon-field-date' },
-  { formType: 'user', name: '人员', icon: 'wk wk-icon-field-user' },
-  { formType: 'structure', name: '部门', icon: 'wk wk-icon-field-structure' },
-  { formType: 'file', name: '附件', icon: 'wk wk-icon-field-file' },
-  { formType: 'desc', name: '描述文字', icon: 'wk wk-icon-field-desc' }
-]
+export const fieldTypeLib = supportedCustomerFieldTypeLib
 
-export const designerFields = [
-  [
-    { formAssistId: 'field-name', name: '客户名称', formType: 'text', stylePercent: 50, required: true },
-    { formAssistId: 'field-source', name: '客户来源', formType: 'select', stylePercent: 50, required: false }
-  ],
-  [
-    { formAssistId: 'field-mobile', name: '手机', formType: 'mobile', stylePercent: 50, required: false },
-    { formAssistId: 'field-owner', name: '负责人', formType: 'user', stylePercent: 50, required: true }
-  ],
-  [
-    { formAssistId: 'field-remark', name: '备注', formType: 'textarea', stylePercent: 100, required: false }
-  ]
-]
+export const designerFields = createDesignerFieldsFromModel(customerFieldModel)
 
 export const approvalRows = [
   { metadataId: 'flow-001', examineName: '合同审批流程', label: '合同', advancedConfigVO: '允许重新提交', updateUserName: 'admin', updateTime: '2026-05-31 11:22', status: 1 },
@@ -436,39 +400,445 @@ export const approvalFields = [
   { prop: 'status', label: '状态', width: 100 }
 ]
 
+export const approvalFlowTemplate = {
+  tabs: [
+    { label: '1.设置基础信息', value: 'base' },
+    { label: '2.配置流程', value: 'flow' }
+  ],
+  baseFields: [
+    { field: 'examineName', label: '审批流名称', formType: 'text', value: '合同审批流程', required: true },
+    { field: 'label', label: '关联对象', formType: 'select', value: '合同', options: ['合同', '回款', '发票', '报价单'], required: true },
+    { field: 'description', label: '审批说明', formType: 'textarea', value: '合同金额达到规则后进入审批。' },
+    { field: 'rejectType', label: '审批被拒后', formType: 'radio', value: '允许重新提交', options: ['允许重新提交', '重新审批', '不允许重新提交'] }
+  ],
+  nodePalette: [
+    { type: 'start', label: '发起人', icon: 'wk wk-user', theme: 'start', description: '拥有发起权限' },
+    { type: 'approve', label: '审批人', icon: 'wk wk-approve', theme: 'approve', description: '部门负责人审批' },
+    { type: 'condition', label: '条件分支', icon: 'wk wk-icon-stage', theme: 'condition', description: '按金额或字段条件分流' },
+    { type: 'fill', label: '填写', icon: 'wk wk-edit', theme: 'fill', description: '补充审批所需字段' },
+    { type: 'copy', label: '抄送人', icon: 'wk wk-associated', theme: 'copy', description: '流程结束后抄送' }
+  ],
+  sendNode: {
+    nodeId: 'flow-send-node',
+    type: 'start',
+    theme: 'start',
+    name: '发起人',
+    content: '拥有合同、回款、发票、报价单发起权限',
+    disabled: true,
+    icon: 'wk wk-visit-contract'
+  },
+  canvasNodes: [
+    {
+      nodeId: 'flow-approve-director',
+      type: 'approve',
+      theme: 'approve',
+      examineType: 2,
+      name: '直属上级审批',
+      content: '发起人上级自动匹配',
+      parentLevel: 1,
+      approveWay: '依次审批'
+    },
+    {
+      nodeId: 'flow-condition-amount',
+      type: 'condition',
+      theme: 'condition',
+      examineType: 0,
+      name: '金额条件分支',
+      conditionList: [
+        {
+          nodeId: 'flow-condition-amount-high',
+          conditionName: '合同金额大于 100000',
+          content: '合同金额 大于 100000 元',
+          conditionDataList: ['合同金额 大于 100000 元'],
+          examineDataList: [
+            {
+              nodeId: 'flow-approve-finance',
+              type: 'approve',
+              theme: 'approve',
+              examineType: 3,
+              name: '财务复核',
+              content: '财务负责人或签',
+              roleText: '财务负责人',
+              approveWay: '或签'
+            }
+          ]
+        },
+        {
+          nodeId: 'flow-condition-amount-other',
+          conditionName: '其他金额',
+          content: '未命中其他条件',
+          conditionDataList: [],
+          examineDataList: [
+            {
+              nodeId: 'flow-copy-owner',
+              type: 'copy',
+              theme: 'copy',
+              examineType: 7,
+              name: '抄送人',
+              content: '审批完成后抄送客户负责人',
+              userText: '客户负责人',
+              isSelf: false,
+              isAdd: true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      nodeId: 'flow-fill-finance',
+      type: 'fill',
+      theme: 'fill',
+      examineType: 9,
+      name: '财务填写',
+      content: '补充付款计划、开票信息'
+    }
+  ],
+  advancedFields: [
+    { field: 'resubmitPolicy', label: '重新提交策略', formType: 'radio', value: '回到当前节点', options: ['回到当前节点', '从头开始审批'] },
+    { field: 'recallEnabled', label: '允许发起人撤回', formType: 'switch', value: true },
+    { field: 'duplicateCheck', label: '同一审批人自动跳过', formType: 'switch', value: true },
+    { field: 'carbonCopyEnd', label: '审批结束抄送', formType: 'select', value: '客户负责人', options: ['客户负责人', '直属上级', '部门负责人'] }
+  ],
+  excludedNodeTypes: ['通知', '邮件通知', 'Webhook', '定时触发', '字段更新', '删除数据']
+}
+
+const poolUsers = [
+  { id: 'pool-user-001', realname: 'admin', img: '' },
+  { id: 'pool-user-002', realname: '林舟', img: '' },
+  { id: 'pool-user-003', realname: '张敏', img: '' },
+  { id: 'pool-user-004', realname: '周芮', img: '' },
+  { id: 'pool-user-005', realname: '韩予', img: '' }
+]
+
+const poolDepartments = [
+  { deptId: 'dept-sales', name: '销售中心' },
+  { deptId: 'dept-east', name: '华东销售组' },
+  { deptId: 'dept-key-account', name: '大客户组' },
+  { deptId: 'dept-success', name: '客户成功部' }
+]
+
+const leadsPoolFields = [
+  { key: 'leadsName', name: '线索名称' },
+  { key: 'mobile', name: '手机号' },
+  { key: 'source', name: '来源' },
+  { key: 'ownerUserName', name: '负责人' },
+  { key: 'lastTime', name: '最后跟进时间' }
+]
+
+const customerPoolFields = [
+  { key: 'customerName', name: '客户名称' },
+  { key: 'level', name: '客户级别' },
+  { key: 'ownerUserName', name: '负责人' },
+  { key: 'lastTime', name: '最后跟进时间' },
+  { key: 'dealStatus', name: '成交状态' }
+]
+
+function poolFieldList(fields, visibleKeys) {
+  return fields.map(field => ({
+    ...field,
+    isHidden: visibleKeys.includes(field.key) ? 0 : 1
+  }))
+}
+
 export const poolRuleTemplates = {
   leads: {
     title: '线索池规则设置',
     createText: '新建线索池',
     idField: 'poolId',
+    mockUsers: poolUsers,
+    mockDepartments: poolDepartments,
+    poolFields: leadsPoolFields,
     fields: [
-      { prop: 'poolName', label: '线索池名称', width: 160 },
-      { prop: 'adminUser', label: '线索池管理员', width: 180 },
-      { prop: 'memberUser', label: '线索池成员', width: 220 },
-      { prop: 'leadsNum', label: '线索数量', width: 110 },
+      { prop: 'poolName', label: '线索池名称', width: 150 },
+      { prop: 'adminUser', label: '线索池管理员' },
+      { prop: 'memberUser', label: '线索池成员' },
+      { prop: 'leadsNum', label: '线索数量', width: 100 },
       { prop: 'status', label: '状态', width: 100 }
     ],
     rows: [
-      { poolId: 'leads-pool-001', poolName: '默认线索池', adminUser: 'admin', memberUser: '销售一部、销售二部', leadsNum: 128, status: '启用' },
-      { poolId: 'leads-pool-002', poolName: '华东线索池', adminUser: '林舟', memberUser: '华东销售组', leadsNum: 86, status: '启用' },
-      { poolId: 'leads-pool-003', poolName: '沉睡线索池', adminUser: '张敏', memberUser: '运营组', leadsNum: 32, status: '停用' }
+      {
+        poolId: 'leads-pool-001',
+        poolName: '默认线索池',
+        adminUser: [poolUsers[0]],
+        memberUser: [poolUsers[1], poolUsers[3]],
+        memberDept: [poolDepartments[0], poolDepartments[1]],
+        isNeedChild: 1,
+        leadsNum: 128,
+        status: 1,
+        preOwnerSetting: 1,
+        preOwnerSettingDay: 7,
+        receiveSetting: 1,
+        receiveNum: 20,
+        remindSetting: 1,
+        remindDay: 3,
+        putInRule: 1,
+        autoAllot: 1,
+        rule: [
+          { id: 'leads-recycle-1', label: '跟进规则', text: '7 天未跟进自动回收' },
+          { id: 'leads-recycle-2', label: '转化规则', text: '15 天未转客户回收' }
+        ],
+        allot: {
+          allocationPlan: '按比例分配',
+          triggerAction: ['新数据进入池后分配']
+        },
+        field: poolFieldList(leadsPoolFields, ['leadsName', 'mobile', 'source']),
+        recycleRule: '7 天未跟进自动回收',
+        receiveRule: '每人每天领取 20 条',
+        allotRule: '按比例分配'
+      },
+      {
+        poolId: 'leads-pool-002',
+        poolName: '华东线索池',
+        adminUser: [poolUsers[1]],
+        memberUser: [poolUsers[2], poolUsers[4]],
+        memberDept: [poolDepartments[1]],
+        isNeedChild: 1,
+        leadsNum: 86,
+        status: 1,
+        preOwnerSetting: 2,
+        preOwnerSettingDay: 10,
+        receiveSetting: 1,
+        receiveNum: 10,
+        remindSetting: 1,
+        remindDay: 5,
+        putInRule: 1,
+        autoAllot: 1,
+        rule: [
+          { id: 'leads-recycle-3', label: '区域规则', text: '15 天未转客户回收' }
+        ],
+        allot: {
+          allocationPlan: '按数量分配',
+          triggerAction: ['新数据进入池后分配', '线索重新分配后触发']
+        },
+        field: poolFieldList(leadsPoolFields, ['leadsName', 'source', 'ownerUserName']),
+        recycleRule: '15 天未转客户回收',
+        receiveRule: '每人每天领取 10 条',
+        allotRule: '按数量分配'
+      },
+      {
+        poolId: 'leads-pool-003',
+        poolName: '沉睡线索池',
+        adminUser: [poolUsers[2]],
+        memberUser: [poolUsers[4]],
+        memberDept: [poolDepartments[3]],
+        isNeedChild: 0,
+        leadsNum: 32,
+        status: 0,
+        preOwnerSetting: 0,
+        preOwnerSettingDay: 7,
+        receiveSetting: 2,
+        receiveNum: 0,
+        remindSetting: 0,
+        remindDay: 3,
+        putInRule: 0,
+        autoAllot: 0,
+        rule: [],
+        allot: {
+          allocationPlan: '按比例分配',
+          triggerAction: []
+        },
+        field: poolFieldList(leadsPoolFields, ['leadsName', 'mobile', 'lastTime']),
+        recycleRule: '不自动回收',
+        receiveRule: '暂停领取',
+        allotRule: '手动分配'
+      }
+    ],
+    defaultForm: {
+      poolName: '新建线索池',
+      adminUser: [poolUsers[0]],
+      memberUser: [poolUsers[1]],
+      memberDept: [poolDepartments[0]],
+      isNeedChild: 1,
+      preOwnerSetting: 1,
+      preOwnerSettingDay: 7,
+      receiveSetting: 1,
+      receiveNum: 20,
+      remindSetting: 1,
+      remindDay: 3,
+      putInRule: 1,
+      autoAllot: 1,
+      rule: [
+        { id: 'leads-recycle-default-1', label: '跟进规则', text: '7 天未跟进自动回收' }
+      ],
+      allot: {
+        allocationPlan: '按比例分配',
+        triggerAction: ['新数据进入池后分配']
+      },
+      field: poolFieldList(leadsPoolFields, ['leadsName', 'mobile', 'source'])
+    },
+    createSections: [
+      {
+        title: '基本信息',
+        fields: [
+          { field: 'poolName', label: '线索池名称', formType: 'text', required: true },
+          { field: 'adminUser', label: '线索池管理员', formType: 'user-select', required: true },
+          { field: 'memberUser', label: '线索池成员', formType: 'user-dep-select', required: true }
+        ]
+      },
+      {
+        title: '规则设置',
+        fields: [
+          { field: 'preOwnerSetting', label: '领取规则', formType: 'radio' },
+          { field: 'receiveSetting', label: '领取频率规则', formType: 'radio' },
+          { field: 'remindSetting', label: '提醒规则', formType: 'radio' },
+          { field: 'putInRule', label: '回收规则', formType: 'radio' },
+          { field: 'autoAllot', label: '自动分配', formType: 'radio' },
+          { field: 'field', label: '线索池字段', formType: 'checkbox' }
+        ]
+      }
+    ],
+    transferFields: [
+      { field: 'transferTo', label: '转移至', formType: 'select' }
     ]
   },
   customer: {
     title: '客户公海规则设置',
     createText: '新建客户公海',
     idField: 'poolId',
+    mockUsers: poolUsers,
+    mockDepartments: poolDepartments,
+    poolFields: customerPoolFields,
     fields: [
-      { prop: 'poolName', label: '公海名称', width: 160 },
-      { prop: 'adminUser', label: '公海管理员', width: 180 },
-      { prop: 'memberUser', label: '分配员工', width: 220 },
-      { prop: 'customerNum', label: '客户数量', width: 110 },
+      { prop: 'poolName', label: '公海名称', width: 150 },
+      { prop: 'adminUser', label: '公海管理员' },
+      { prop: 'memberUser', label: '分配员工' },
+      { prop: 'customerNum', label: '客户数量', width: 100 },
       { prop: 'status', label: '状态', width: 100 }
     ],
     rows: [
-      { poolId: 'customer-pool-001', poolName: '默认客户公海', adminUser: 'admin', memberUser: '销售一部、销售二部', customerNum: 240, status: '启用' },
-      { poolId: 'customer-pool-002', poolName: '重点行业公海', adminUser: '林舟', memberUser: '行业销售组', customerNum: 76, status: '启用' },
-      { poolId: 'customer-pool-003', poolName: '历史客户公海', adminUser: '张敏', memberUser: '客户成功组', customerNum: 45, status: '停用' }
+      {
+        poolId: 'customer-pool-001',
+        poolName: '默认客户公海',
+        adminUser: [poolUsers[0]],
+        memberUser: [poolUsers[1], poolUsers[3]],
+        memberDept: [poolDepartments[0], poolDepartments[2]],
+        isNeedChild: 1,
+        customerNum: 240,
+        status: 1,
+        preOwnerSetting: 1,
+        preOwnerSettingDay: 30,
+        receiveSetting: 1,
+        receiveNum: 10,
+        remindSetting: 1,
+        remindDay: 5,
+        putInRule: 1,
+        autoAllot: 1,
+        rule: [
+          { id: 'customer-recycle-1', label: '跟进规则', text: '30 天未跟进放入公海' },
+          { id: 'customer-recycle-2', label: '成交规则', text: '90 天未成交放入公海' }
+        ],
+        allot: {
+          allocationPlan: '按比例分配',
+          triggerAction: ['新数据进入池后分配']
+        },
+        field: poolFieldList(customerPoolFields, ['customerName', 'level', 'ownerUserName']),
+        recycleRule: '30 天未跟进放入公海',
+        receiveRule: '每人每天领取 10 个',
+        allotRule: '按比例分配'
+      },
+      {
+        poolId: 'customer-pool-002',
+        poolName: '重点行业公海',
+        adminUser: [poolUsers[1]],
+        memberUser: [poolUsers[2], poolUsers[4]],
+        memberDept: [poolDepartments[2]],
+        isNeedChild: 1,
+        customerNum: 76,
+        status: 1,
+        preOwnerSetting: 2,
+        preOwnerSettingDay: 60,
+        receiveSetting: 0,
+        receiveNum: 0,
+        remindSetting: 1,
+        remindDay: 7,
+        putInRule: 1,
+        autoAllot: 1,
+        rule: [
+          { id: 'customer-recycle-3', label: '行业规则', text: '90 天未成交放入公海' }
+        ],
+        allot: {
+          allocationPlan: '按数量分配',
+          triggerAction: ['新数据进入池后分配', '客户重新分配后触发']
+        },
+        field: poolFieldList(customerPoolFields, ['customerName', 'level', 'lastTime']),
+        recycleRule: '90 天未成交放入公海',
+        receiveRule: '不限制领取',
+        allotRule: '按数量分配'
+      },
+      {
+        poolId: 'customer-pool-003',
+        poolName: '历史客户公海',
+        adminUser: [poolUsers[2]],
+        memberUser: [poolUsers[4]],
+        memberDept: [poolDepartments[3]],
+        isNeedChild: 0,
+        customerNum: 45,
+        status: 0,
+        preOwnerSetting: 0,
+        preOwnerSettingDay: 30,
+        receiveSetting: 2,
+        receiveNum: 0,
+        remindSetting: 0,
+        remindDay: 3,
+        putInRule: 0,
+        autoAllot: 0,
+        rule: [],
+        allot: {
+          allocationPlan: '按比例分配',
+          triggerAction: []
+        },
+        field: poolFieldList(customerPoolFields, ['customerName', 'ownerUserName', 'dealStatus']),
+        recycleRule: '不自动回收',
+        receiveRule: '暂停领取',
+        allotRule: '手动分配'
+      }
+    ],
+    defaultForm: {
+      poolName: '新建客户公海',
+      adminUser: [poolUsers[0]],
+      memberUser: [poolUsers[1]],
+      memberDept: [poolDepartments[0]],
+      isNeedChild: 1,
+      preOwnerSetting: 1,
+      preOwnerSettingDay: 30,
+      receiveSetting: 1,
+      receiveNum: 10,
+      remindSetting: 1,
+      remindDay: 5,
+      putInRule: 1,
+      autoAllot: 1,
+      rule: [
+        { id: 'customer-recycle-default-1', label: '跟进规则', text: '30 天未跟进放入公海' }
+      ],
+      allot: {
+        allocationPlan: '按比例分配',
+        triggerAction: ['新数据进入池后分配']
+      },
+      field: poolFieldList(customerPoolFields, ['customerName', 'level', 'ownerUserName'])
+    },
+    createSections: [
+      {
+        title: '基本信息',
+        fields: [
+          { field: 'poolName', label: '公海名称', formType: 'text', required: true },
+          { field: 'adminUser', label: '公海管理员', formType: 'user-select', required: true },
+          { field: 'memberUser', label: '分配员工', formType: 'user-dep-select', required: true }
+        ]
+      },
+      {
+        title: '规则设置',
+        fields: [
+          { field: 'preOwnerSetting', label: '领取规则', formType: 'radio' },
+          { field: 'receiveSetting', label: '领取频率规则', formType: 'radio' },
+          { field: 'remindSetting', label: '提醒规则', formType: 'radio' },
+          { field: 'putInRule', label: '回收规则', formType: 'radio' },
+          { field: 'autoAllot', label: '自动分配', formType: 'radio' },
+          { field: 'field', label: '公海字段', formType: 'checkbox' }
+        ]
+      }
+    ],
+    transferFields: [
+      { field: 'transferTo', label: '转移至', formType: 'select' }
     ]
   }
 }
@@ -485,52 +855,259 @@ export const printTemplateConfig = {
     { prop: 'updateTime', label: '更新时间', width: 160 }
   ],
   rows: [
-    { templateId: 'print-001', templateName: '客户拜访记录模板', type: '客户', createTime: '2026-05-21 10:20', createUserName: 'admin', updateTime: '2026-06-01 16:10' },
-    { templateId: 'print-002', templateName: '合同标准打印模板', type: '合同', createTime: '2026-05-18 09:35', createUserName: '林舟', updateTime: '2026-05-30 11:40' },
-    { templateId: 'print-003', templateName: '报价单模板', type: '报价单', createTime: '2026-05-10 14:28', createUserName: '张敏', updateTime: '2026-05-28 18:12' }
+    { templateId: 'print-001', templateName: '客户拜访记录模板', type: 2, createTime: '2026-05-21 10:20', createUserName: 'admin', updateTime: '2026-06-01 16:10' },
+    { templateId: 'print-002', templateName: '合同标准打印模板', type: 6, createTime: '2026-05-18 09:35', createUserName: '林舟', updateTime: '2026-05-30 11:40' },
+    { templateId: 'print-003', templateName: '报价单模板', type: 26, createTime: '2026-05-10 14:28', createUserName: '张敏', updateTime: '2026-05-28 18:12' }
   ],
-  actions: ['编辑名称', '复制', '删除']
+  actions: ['编辑名称', '复制', '删除'],
+  createFields: [
+    { field: 'templateName', label: '模板名称', formType: 'text', value: '客户拜访记录模板', required: true },
+    {
+      field: 'type',
+      label: '关联对象',
+      formType: 'select',
+      value: 2,
+      options: [
+        { label: '线索', value: 1 },
+        { label: '客户', value: 2 },
+        { label: '联系人', value: 3 },
+        { label: '产品', value: 4 },
+        { label: '商机', value: 5 },
+        { label: '报价单', value: 26 },
+        { label: '合同', value: 6 },
+        { label: '回款', value: 7 },
+        { label: '发票', value: 18 },
+        { label: '回访', value: 17 }
+      ],
+      required: true
+    }
+  ],
+  editor: {
+    title: '新建打印模板',
+    printSize: {
+      sizeName: '210,297',
+      width: 210,
+      height: 297,
+      marginName: '25.4,25.4,31.8,31.8',
+      top: 25.4,
+      bottom: 25.4,
+      left: 31.8,
+      right: 31.8
+    },
+    fieldTabs: [
+      {
+        key: 'customer',
+        label: '客户',
+        fields: [
+          { fieldName: 'customerName', name: '客户名称' },
+          { fieldName: 'level', name: '客户级别' },
+          { fieldName: 'ownerUserName', name: '负责人' },
+          { fieldName: 'mobile', name: '手机' },
+          { fieldName: 'telephone', name: '电话' },
+          { fieldName: 'address', name: '详细地址' }
+        ]
+      },
+      {
+        key: 'stage',
+        label: '阶段组',
+        fields: []
+      },
+      {
+        key: 'contacts',
+        label: '联系人',
+        fields: [
+          { fieldName: 'contactsName', name: '联系人姓名' },
+          { fieldName: 'contactsMobile', name: '联系人电话' },
+          { fieldName: 'post', name: '职务' }
+        ]
+      },
+      {
+        key: 'business',
+        label: '商机',
+        fields: [
+          { fieldName: 'businessName', name: '商机名称' },
+          { fieldName: 'money', name: '商机金额' },
+          { fieldName: 'stage', name: '商机阶段' }
+        ]
+      },
+      {
+        key: 'contract',
+        label: '合同',
+        fields: [
+          { fieldName: 'contractNum', name: '合同编号' },
+          { fieldName: 'contractName', name: '合同名称' },
+          { fieldName: 'contractMoney', name: '合同金额' }
+        ]
+      }
+    ],
+    stageTree: [
+      {
+        label: '客户默认阶段流程',
+        labelId: 'flow-customer',
+        isChildren: true,
+        children: [
+          {
+            label: '初始接触',
+            labelId: 'stage-visit',
+            isChildren: true,
+            children: [
+              { label: '拜访计划', labelId: 'visitPlan', labelType: 'task' },
+              { label: '跟进记录', labelId: 'followRecord', labelType: 'form' }
+            ]
+          },
+          {
+            label: '审批记录明细',
+            labelId: 'flowExamine',
+            isChildren: true,
+            children: [
+              { label: '节点名称', labelId: 'flowName', labelType: 'flowExamine' },
+              { label: '审核人', labelId: 'realname', labelType: 'flowExamine' },
+              { label: '审核结果', labelId: 'examineStatus', labelType: 'flowExamine' }
+            ]
+          }
+        ]
+      }
+    ],
+    defaultContent: [
+      { type: 'paragraph', text: '客户拜访记录' },
+      { type: 'tokens', fields: ['客户名称', '客户级别', '负责人'] },
+      { type: 'paragraph', text: '跟进内容：' },
+      { type: 'tokens', fields: ['跟进记录', '下次联系时间'] }
+    ]
+  }
 }
 
 export const businessParamTemplate = {
   title: '业务参数设置',
   nav: [
-    { key: 'stage', label: '阶段流程设置', description: '维护客户、商机等对象的阶段流转。' },
-    { key: 'verification', label: '数据验证规则', description: '配置保存前的数据完整性校验。' },
-    { key: 'category', label: '产品类别设置', description: '维护产品分类和层级。' },
-    { key: 'limit', label: '拥有/锁定客户数限制', description: '控制员工客户持有上限。' },
-    { key: 'reason', label: '公海/线索池理由设置', description: '维护放入、领取、转移原因。' }
+    { key: 'stage', label: '阶段流程设置' },
+    { key: 'verification', label: '数据验证规则' },
+    { key: 'category', label: '产品类别设置' },
+    { key: 'ownLimit', label: '拥有客户数限制' },
+    { key: 'lockLimit', label: '锁定客户数限制' },
+    { key: 'putReason', label: '放入客户公海原因' },
+    { key: 'receiveReason', label: '客户领取公海原因' },
+    { key: 'duplicateCheck', label: '信息查重配置' }
   ],
   panels: {
     stage: {
       title: '阶段流程设置',
-      summary: '用表单和步骤列表表达阶段流配置，后续生成时可替换为具体对象阶段。',
-      rows: ['初始接触', '需求确认', '方案报价', '成交/归档'],
-      controls: ['启用阶段推进校验', '允许退回上一阶段']
+      type: 'stage-flow',
+      actionText: '新建阶段流程',
+      summary: '维护客户、商机等对象的阶段流程、适用范围和启停状态。',
+      filters: [
+        { field: 'status', label: '状态', options: ['启用', '停用'] },
+        { field: 'label', label: '关联对象', options: ['客户', '商机', '合同'] }
+      ],
+      rows: [
+        { id: 'stage-001', flowName: '客户默认阶段流程', label: '客户', stageUserDep: '全公司', updateTime: '2026-06-01 10:20', status: '启用', stages: ['初始接触', '需求确认', '成交客户'] },
+        { id: 'stage-002', flowName: '商机销售阶段流程', label: '商机', stageUserDep: '销售中心', updateTime: '2026-05-28 15:12', status: '启用', stages: ['需求确认', '方案报价', '赢单/输单'] },
+        { id: 'stage-003', flowName: '合同履约阶段流程', label: '合同', stageUserDep: '客户成功部', updateTime: '2026-05-21 09:40', status: '停用', stages: ['待签署', '执行中', '已归档'] }
+      ]
     },
     verification: {
       title: '数据验证规则',
-      summary: '用规则列表表达字段校验能力，避免在模板中铺满所有业务规则。',
-      rows: ['客户名称必填', '手机号格式校验', '合同金额大于 0'],
-      controls: ['保存时校验', '导入时校验']
+      type: 'verification-rule',
+      actionText: '新建规则',
+      summary: '配置保存前的数据完整性校验，模板只保留规则列表和编辑入口。',
+      filters: [
+        { field: 'module', label: '模块', options: ['客户', '联系人', '商机', '合同'] }
+      ],
+      rows: [
+        { id: 'rule-001', name: '客户名称必填', originalFormula: '客户名称 为空', formulaText: '保存客户时校验客户名称', targetModuleId: '客户', updateUserName: 'admin', createTime: '2026-06-02 11:10' },
+        { id: 'rule-002', name: '手机号格式校验', originalFormula: '手机号 不符合格式', formulaText: '保存联系人时校验手机号', targetModuleId: '联系人', updateUserName: '林舟', createTime: '2026-05-29 16:18' },
+        { id: 'rule-003', name: '合同金额大于 0', originalFormula: '合同金额 <= 0', formulaText: '保存合同时校验金额', targetModuleId: '合同', updateUserName: '张敏', createTime: '2026-05-20 09:36' }
+      ]
     },
     category: {
       title: '产品类别设置',
-      summary: '用树形列表表达分类配置能力。',
-      rows: ['硬件产品', '软件服务', '实施服务'],
-      controls: ['允许多级分类']
+      type: 'category-tree',
+      actionText: '新建类别',
+      summary: '维护产品分类层级，用树形列表表达可生成的分类配置能力。',
+      rows: [
+        {
+          id: 'cat-001',
+          name: '硬件产品',
+          parentName: '-',
+          productCount: 32,
+          status: '启用',
+          children: [
+            { id: 'cat-001-1', name: '工业网关', parentName: '硬件产品', productCount: 12, status: '启用', children: [] },
+            { id: 'cat-001-2', name: '采集终端', parentName: '硬件产品', productCount: 20, status: '启用', children: [] }
+          ]
+        },
+        {
+          id: 'cat-002',
+          name: '软件服务',
+          parentName: '-',
+          productCount: 18,
+          status: '启用',
+          children: [
+            { id: 'cat-002-1', name: '实施服务', parentName: '软件服务', productCount: 9, status: '启用', children: [] },
+            { id: 'cat-002-2', name: '运维服务', parentName: '软件服务', productCount: 9, status: '停用', children: [] }
+          ]
+        }
+      ]
     },
-    limit: {
-      title: '拥有/锁定客户数限制',
-      summary: '用数值输入和开关表达限制类业务参数。',
-      rows: ['销售人员 500 个', '销售主管 1000 个', '超级管理员不限'],
-      controls: ['启用拥有客户数限制', '启用锁定客户数限制']
+    ownLimit: {
+      title: '拥有客户数限制',
+      type: 'customer-limit',
+      limitKind: 'own',
+      actionText: '新增限制规则',
+      switchLabel: '启用拥有客户数限制',
+      switchValue: true,
+      rows: [
+        { id: 'own-limit-001', scope: '销售人员', userIds: '销售一部、销售二部', ownCustomerNum: 500, status: '启用' },
+        { id: 'own-limit-002', scope: '销售主管', userIds: '销售中心', ownCustomerNum: 1000, status: '启用' },
+        { id: 'own-limit-003', scope: '客户成功', userIds: '客户成功部', ownCustomerNum: 800, status: '停用' }
+      ]
     },
-    reason: {
-      title: '公海/线索池理由设置',
-      summary: '用可编辑列表表达原因字典配置。',
-      rows: ['长期未跟进', '客户主动放弃', '区域调整', '重复数据'],
-      controls: ['启用原因必填']
+    lockLimit: {
+      title: '锁定客户数限制',
+      type: 'customer-limit',
+      limitKind: 'lock',
+      actionText: '新增限制规则',
+      switchLabel: '启用锁定客户数限制',
+      switchValue: true,
+      rows: [
+        { id: 'lock-limit-001', scope: '销售人员', userIds: '销售一部、销售二部', lockCustomerNum: 120, status: '启用' },
+        { id: 'lock-limit-002', scope: '销售主管', userIds: '销售中心', lockCustomerNum: 260, status: '启用' },
+        { id: 'lock-limit-003', scope: '客户成功', userIds: '客户成功部', lockCustomerNum: 160, status: '停用' }
+      ],
+    },
+    putReason: {
+      title: '放入客户公海原因',
+      type: 'reason-list',
+      actionText: '保存',
+      switchLabel: '设置为必填',
+      requiredSwitch: true,
+      reasonTitle: '放入客户公海原因',
+      reasons: ['长期未跟进', '客户主动放弃', '区域调整']
+    },
+    receiveReason: {
+      title: '客户领取公海原因',
+      type: 'reason-list',
+      actionText: '保存',
+      switchLabel: '设置为必填',
+      requiredSwitch: true,
+      reasonTitle: '客户领取公海原因',
+      reasons: ['主动开发', '客户咨询', '行业跟进']
+    },
+    duplicateCheck: {
+      title: '信息查重配置',
+      type: 'duplicate-check',
+      actionText: '保存',
+      enabled: true,
+      fields: [
+        { field: 'customerName', label: '客户名称', checked: true },
+        { field: 'mobile', label: '手机', checked: true },
+        { field: 'telephone', label: '电话', checked: false }
+      ],
+      ranges: [
+        { label: '客户', checked: true },
+        { label: '线索', checked: true }
+      ],
+      savedAt: ''
     }
   }
 }
@@ -542,7 +1119,7 @@ export const logFilters = {
 }
 
 export const systemLogRows = [
-  { id: 'log-001', userName: 'admin', createTime: '2026-06-03 10:21:35', behaviorName: '编辑', moduleName: '客户', applyName: 'CRM', operationObj: '合同客户', clientIp: '192.168.1.22', operationInfo: '将客户级别从 C 级调整为 A 级。' },
+  { id: 'log-001', userName: 'admin', createTime: '2026-06-03 10:21:35', behaviorName: '编辑', moduleName: '客户', applyName: 'CRM', operationObj: '苏州星禾精密制造', clientIp: '192.168.1.22', operationInfo: '将客户级别从 C 级调整为 A 级。' },
   { id: 'log-002', userName: '林舟', createTime: '2026-06-03 09:40:12', behaviorName: '新建', moduleName: '商机', applyName: 'CRM', operationObj: '智能制造扩容项目', clientIp: '192.168.1.31', operationInfo: '创建商机并关联客户。' },
   { id: 'log-003', userName: '张敏', createTime: '2026-06-02 17:36:51', behaviorName: '导出', moduleName: '合同', applyName: 'CRM', operationObj: '合同列表', clientIp: '192.168.1.18', operationInfo: '导出合同列表 15 条。' },
   { id: 'log-004', userName: 'admin', createTime: '2026-06-02 15:10:08', behaviorName: '启用', moduleName: '角色权限', applyName: '后台管理', operationObj: '销售主管', clientIp: '192.168.1.22', operationInfo: '更新客户管理字段授权。' }
@@ -695,9 +1272,15 @@ export const adminModuleSchemas = {
       tableOffset: 220
     },
     flowCanvas: {
-      sections: ['基础信息', '审批流程', '高级配置'],
-      nodeTypes: ['审批人', '抄送人', '条件分支']
-    }
+      sections: ['基础信息', '高级配置', '审批流程'],
+      nodeTypes: approvalFlowTemplate.nodePalette.map(item => item.label)
+    },
+    baseFields: approvalFlowTemplate.baseFields,
+    sendNode: approvalFlowTemplate.sendNode,
+    nodePalette: approvalFlowTemplate.nodePalette,
+    canvasNodes: approvalFlowTemplate.canvasNodes,
+    advancedFields: approvalFlowTemplate.advancedFields,
+    excludedNodeTypes: approvalFlowTemplate.excludedNodeTypes
   },
   leadsPoolRule: {
     title: poolRuleTemplates.leads.title,
@@ -716,14 +1299,17 @@ export const adminModuleSchemas = {
       adminTableAction('delete', '删除', true)
     ],
     dialogs: {
-      create: { title: poolRuleTemplates.leads.createText, width: 500 },
-      transfer: { title: '转移线索池', width: 500 }
+      create: { title: poolRuleTemplates.leads.createText, mode: 'xr-create' },
+      detail: { title: '线索池详情', mode: 'slide-view', minWidth: 950 },
+      transfer: { title: '转移', width: 450 }
     },
     layout: {
       mode: 'pool-rule-list-template',
       tableOffset: 220,
       sharedTemplate: 'pool-rule-list'
-    }
+    },
+    createSections: poolRuleTemplates.leads.createSections,
+    transferFields: poolRuleTemplates.leads.transferFields
   },
   customerPoolRule: {
     title: poolRuleTemplates.customer.title,
@@ -742,14 +1328,17 @@ export const adminModuleSchemas = {
       adminTableAction('delete', '删除', true)
     ],
     dialogs: {
-      create: { title: poolRuleTemplates.customer.createText, width: 500 },
-      transfer: { title: '转移客户公海', width: 500 }
+      create: { title: poolRuleTemplates.customer.createText, mode: 'xr-create' },
+      detail: { title: '客户公海详情', mode: 'slide-view', minWidth: 950 },
+      transfer: { title: '转移', width: 450 }
     },
     layout: {
       mode: 'pool-rule-list-template',
       tableOffset: 220,
       sharedTemplate: 'pool-rule-list'
-    }
+    },
+    createSections: poolRuleTemplates.customer.createSections,
+    transferFields: poolRuleTemplates.customer.transferFields
   },
   printTemplate: {
     title: printTemplateConfig.title,
@@ -767,12 +1356,16 @@ export const adminModuleSchemas = {
       adminTableAction('delete', '删除', true)
     ],
     dialogs: {
-      create: { title: printTemplateConfig.createText, width: 520 }
+      create: { title: printTemplateConfig.createText, width: 400 },
+      printSize: { title: '纸张尺寸', width: 480 }
     },
     layout: {
       mode: 'config-list-template',
-      tableOffset: 220
-    }
+      tableOffset: 220,
+      fieldNavWidth: 300
+    },
+    createFields: printTemplateConfig.createFields,
+    editor: printTemplateConfig.editor
   },
   businessParam: {
     title: businessParamTemplate.title,

@@ -86,7 +86,7 @@
       v-model="detailDialogVisible"
       title="日志详情"
       width="700px"
-      :style="{ '--admin-log-detail-dialog-width': `${sourceDimensions.adminLogDetailDialogWidth}px` }"
+      :style="{ '--admin-log-detail-dialog-width': `${wkcrmUiDimensions.adminLogDetailDialogWidth}px` }"
       :close-on-click-modal="false"
       data-section="admin-log-detail-dialog"
     >
@@ -122,7 +122,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { logFilters, systemLogFields, systemLogRows } from '../mock/admin'
-import { sourceDimensions } from '../contracts/wkcrmSourceContract'
+import { wkcrmUiDimensions } from '../constants/wkcrmUiTokens'
 
 const dateRange = ref([])
 const operator = ref('')
@@ -147,7 +147,7 @@ const filteredRows = computed(() => {
 
 function updateLogTableHeight() {
   // 源码日志页用视口高度扣除头部、查询条件和分页固定空间。
-  logTableHeight.value = Math.max(320, window.innerHeight - sourceDimensions.adminLogTableOffset)
+  logTableHeight.value = Math.max(320, window.innerHeight - wkcrmUiDimensions.adminLogTableOffset)
 }
 
 function openDetail(row) {

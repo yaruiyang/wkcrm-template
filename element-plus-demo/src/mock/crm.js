@@ -1,3 +1,13 @@
+import {
+  customerFieldModel,
+  createDetailGroupsFromModel,
+  createFieldGroupsFromModel,
+  createFieldListFromModel,
+  createFilterFieldsFromModel
+} from './crmFieldModel.js'
+
+export { customerFieldModel }
+
 export const crmModules = [
   '仪表盘',
   '日历',
@@ -23,10 +33,10 @@ export const sceneList = [
   { label: '下属负责的客户', value: 'subordinate' },
   { label: '我关注的客户', value: 'focus' },
   { label: '今天需联系', value: 'today' },
-  { label: '111', value: 'custom-111' },
-  { label: '99', value: 'custom-99' },
-  { label: '10', value: 'custom-10' },
-  { label: '11', value: 'custom-11' }
+  { label: '重点客户', value: 'key-account' },
+  { label: '本周需联系', value: 'week-follow' },
+  { label: '高价值客户', value: 'high-value' },
+  { label: '待跟进客户', value: 'pending-follow' }
 ]
 
 export const tableStyleObj = {
@@ -44,56 +54,59 @@ export const operations = [
   { type: 'put_seas', name: '放入公海' }
 ]
 
-export const fieldList = [
-  { prop: 'customerName', label: '客户名称', width: 210, fixed: true, sortable: true },
-  { prop: 'telephone', label: '电话', width: 150 },
-  { prop: 'source', label: '客户来源', width: 150 },
-  { prop: 'mobile', label: '手机', width: 150 },
-  { prop: 'email', label: '邮箱', width: 170 },
-  { prop: 'website', label: '网址', width: 170 },
-  { prop: 'industry', label: '客户行业', width: 150 },
-  { prop: 'level', label: '客户级别', width: 130 },
-  { prop: 'nextTime', label: '下次联系时间', width: 180 },
-  { prop: 'ownerUserName', label: '负责人', width: 130 },
-  { prop: 'dealStatus', label: '成交状态', width: 130 },
-  { prop: 'updateTime', label: '更新时间', width: 180 }
-]
+export const uiProfile = {
+  list: {
+    headerActions: ['create', 'dedupe', 'import', 'export'],
+    toolbarActions: ['advancedFilter'],
+    disabledActions: ['expandFilter', 'biChart', 'phoneCall'],
+    fixedColumns: ['selection', 'favorite', 'mainField']
+  },
+  detail: {
+    headerActions: ['edit'],
+    activityTypes: ['followRecord', 'dynamic'],
+    disabledActions: ['pageSwitch', 'quickCreate', 'pendingSchedule', 'activityFilter']
+  },
+  create: {
+    showAllFields: true,
+    disabledActions: ['dataCollapse', 'saveAndNewContact']
+  }
+}
 
 export const customerRows = [
   {
     customerId: '304001',
     __rowUid: '304001-0',
-    customerName: '测试111111',
-    telephone: '',
+    customerName: '苏州星禾精密制造',
+    telephone: '0512-88990012',
     source: '搜索引擎',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '金融业',
-    level: '',
-    nextTime: '',
+    mobile: '139****6182',
+    email: 'contact@xinghe.demo',
+    website: 'https://xinghe.demo',
+    industry: '智能制造',
+    level: 'A',
+    nextTime: '2026-06-10 10:30:00',
     ownerUserName: 'admin',
-    dealStatus: 0,
-    updateTime: '2026-05-20 14:29:19',
-    businessCount: 0,
-    star: 0,
-    callShow: false
+    dealStatus: 1,
+    updateTime: '2026-06-03 14:29:19',
+    businessCount: 2,
+    star: 1,
+    callShow: true
   },
   {
     customerId: '304002',
     __rowUid: '304002-0',
-    customerName: '合同客户',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
+    customerName: '上海云启设备服务',
+    telephone: '021-66558899',
+    source: '客户介绍',
+    mobile: '155****5545',
+    email: 'sales@yunqi.demo',
     website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: 'admin',
+    industry: '企业服务',
+    level: 'A',
+    nextTime: '2026-06-12 15:00:00',
+    ownerUserName: '林舟',
     dealStatus: 1,
-    updateTime: '2026-04-20 09:57:02',
+    updateTime: '2026-06-02 09:57:02',
     businessCount: 1,
     star: 1,
     callShow: true
@@ -101,18 +114,18 @@ export const customerRows = [
   {
     customerId: '304003',
     __rowUid: '304003-0',
-    customerName: '销售张鸥',
+    customerName: '杭州明策科技',
     telephone: '',
-    source: '',
-    mobile: '12452451211',
-    email: '',
+    source: '线上咨询',
+    mobile: '186****6803',
+    email: 'hello@mingce.demo',
     website: '',
-    industry: '',
-    level: '',
+    industry: '软件服务',
+    level: 'B',
     nextTime: '',
-    ownerUserName: '林舟',
+    ownerUserName: '张敏',
     dealStatus: 0,
-    updateTime: '2026-03-09 15:41:26',
+    updateTime: '2026-05-30 15:41:26',
     businessCount: 0,
     star: 0,
     callShow: true
@@ -120,18 +133,18 @@ export const customerRows = [
   {
     customerId: '304004',
     __rowUid: '304004-0',
-    customerName: 'ceshi',
-    telephone: '',
-    source: '',
+    customerName: '南京科锐自动化',
+    telephone: '025-77889900',
+    source: '市场活动',
     mobile: '',
     email: '',
     website: '',
-    industry: '',
-    level: '',
+    industry: '装备制造',
+    level: 'B',
     nextTime: '',
-    ownerUserName: '林舟',
+    ownerUserName: '陈启',
     dealStatus: 0,
-    updateTime: '2026-05-10 09:10:22',
+    updateTime: '2026-05-28 09:10:22',
     businessCount: 0,
     star: 0,
     callShow: false
@@ -139,18 +152,18 @@ export const customerRows = [
   {
     customerId: '304005',
     __rowUid: '304005-0',
-    customerName: '123',
+    customerName: '广州南辰医疗设备',
     telephone: '',
-    source: '',
-    mobile: '',
+    source: '广告投放',
+    mobile: '138****9041',
     email: '',
     website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
+    industry: '医疗器械',
+    level: 'B',
+    nextTime: '2026-06-15 09:30:00',
+    ownerUserName: '周宁',
     dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
+    updateTime: '2026-05-24 17:05:12',
     businessCount: 0,
     star: 0,
     callShow: false
@@ -158,203 +171,35 @@ export const customerRows = [
   {
     customerId: '304006',
     __rowUid: '304006-0',
-    customerName: 'bbbb',
-    telephone: '',
-    source: '',
-    mobile: '',
+    customerName: '成都远航供应链',
+    telephone: '028-66778890',
+    source: '客户介绍',
+    mobile: '137****2206',
     email: '',
     website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304007',
-    __rowUid: '304007-0',
-    customerName: '111222',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: 'admin',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304008',
-    __rowUid: '304008-0',
-    customerName: '阶段视频上传bat...',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '2026-04-20 11:58:31',
-    ownerUserName: 'admin',
-    dealStatus: 0,
-    updateTime: '2026-04-20 09:57:02',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304009',
-    __rowUid: '304009-0',
-    customerName: '小小亮',
-    telephone: '16655554542',
-    source: '',
-    mobile: '155666555...',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '2026-04-20 12:56:56',
-    ownerUserName: '林舟',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: true
-  },
-  {
-    customerId: '304010',
-    __rowUid: '304010-0',
-    customerName: '客户40',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
+    industry: '物流服务',
+    level: 'A',
     nextTime: '',
     ownerUserName: '林舟',
     dealStatus: 0,
-    updateTime: '2026-03-09 15:41:26',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304011',
-    __rowUid: '304011-0',
-    customerName: '国联汽车动力电...',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304012',
-    __rowUid: '304012-0',
-    customerName: '阶段图片上传',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304013',
-    __rowUid: '304013-0',
-    customerName: '阶段审批',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304014',
-    __rowUid: '304014-0',
-    customerName: '阶段矩阵图标样式',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
-    star: 0,
-    callShow: false
-  },
-  {
-    customerId: '304015',
-    __rowUid: '304015-0',
-    customerName: '客户阶段',
-    telephone: '',
-    source: '',
-    mobile: '',
-    email: '',
-    website: '',
-    industry: '',
-    level: '',
-    nextTime: '',
-    ownerUserName: '张敏',
-    dealStatus: 0,
-    updateTime: '2026-02-18 17:05:12',
-    businessCount: 0,
+    updateTime: '2026-05-22 11:18:12',
+    businessCount: 1,
     star: 0,
     callShow: false
   }
 ]
 
+export const fieldList = createFieldListFromModel(customerFieldModel, customerRows)
+export const customerFilterFieldList = createFilterFieldsFromModel(customerFieldModel)
+
 export const stageFlow = {
   flowName: '客户阶段',
   settingList: [
-    { settingId: 's1', settingName: '初步沟通', count: 2, rows: [customerRows[0], customerRows[7]] },
-    { settingId: 's2', settingName: '有些意向', count: 1, rows: [customerRows[9]] },
-    { settingId: 's3', settingName: '开始洽谈', count: 1, rows: [customerRows[10]] },
-    { settingId: 's4', settingName: '正式合同', count: 0, rows: [] },
-    { settingId: 's5', settingName: '结束', count: 0, rows: [], isEnd: true }
+    { settingId: 's1', settingName: '初步沟通', count: 2, rows: [customerRows[0], customerRows[1]] },
+    { settingId: 's2', settingName: '有些意向', count: 1, rows: [customerRows[2]] },
+    { settingId: 's3', settingName: '开始洽谈', count: 1, rows: [customerRows[3]] },
+    { settingId: 's4', settingName: '正式合同', count: 1, rows: [customerRows[4]] },
+    { settingId: 's5', settingName: '结束', count: 1, rows: [customerRows[5]], isEnd: true }
   ]
 }
 
@@ -364,152 +209,14 @@ export const cardCustomers = customerRows.slice(0, 6).map((item) => ({
   lastTime: item.nextTime || item.updateTime || '--'
 }))
 
-export const customerCreateFieldGroups = [
-  {
-    name: '基本信息',
-    fields: [
-      {
-        field: 'customerName',
-        name: '客户名称',
-        formType: 'text',
-        isNull: 1,
-        stylePercent: 100,
-        placeholder: '请输入客户名称',
-        defaultValue: '苏州星禾精密制造'
-      },
-      {
-        field: 'address',
-        name: '地址',
-        formType: 'map_address',
-        stylePercent: 100,
-        placeholder: '请选择地址或输入详细地址',
-        defaultValue: 'beijing-dongcheng'
-      },
-      {
-        field: 'commonOptions',
-        name: '通用选项集',
-        formType: 'select',
-        stylePercent: 50,
-        placeholder: '请选择',
-        setting: ['市场活动', '线上咨询', '客户介绍'],
-        defaultValue: ''
-      },
-      {
-        field: 'richText',
-        name: '富文本',
-        formType: 'rich_text_format',
-        stylePercent: 100,
-        placeholder: '填写客户背景、需求、沟通备注',
-        defaultValue: ''
-      },
-      {
-        field: 'dataCollapse',
-        name: '折叠字段',
-        formType: 'data_collapse',
-        stylePercent: 100
-      },
-      {
-        field: 'source',
-        name: '客户来源',
-        formType: 'select',
-        stylePercent: 50,
-        placeholder: '请选择',
-        setting: ['市场活动', '线上咨询', '客户介绍', '广告投放'],
-        defaultValue: '市场活动',
-        collapseOnly: true
-      },
-      {
-        field: 'single',
-        name: '单选',
-        formType: 'radio',
-        stylePercent: 50,
-        setting: ['A', 'B'],
-        defaultValue: 'A',
-        collapseOnly: true
-      },
-      {
-        field: 'multiple',
-        name: '多选',
-        formType: 'checkbox',
-        stylePercent: 50,
-        setting: ['智能制造', '装备制造'],
-        defaultValue: ['智能制造'],
-        collapseOnly: true
-      },
-      {
-        field: 'logo',
-        name: '企业Logo',
-        formType: 'pic',
-        stylePercent: 50,
-        defaultValue: '',
-        collapseOnly: true
-      },
-      {
-        field: 'mobile',
-        name: '手机',
-        formType: 'text',
-        stylePercent: 50,
-        placeholder: '请输入手机',
-        defaultValue: '139****6182',
-        collapseOnly: true
-      },
-      {
-        field: 'customerRelation',
-        name: '客户关系',
-        formType: 'customer_relations',
-        stylePercent: 50,
-        placeholder: '请选择',
-        setting: ['母公司', '子公司', '关联企业'],
-        defaultValue: '',
-        collapseOnly: true
-      },
-      {
-        field: 'telephone',
-        name: '电话',
-        formType: 'text',
-        stylePercent: 50,
-        placeholder: '请输入电话',
-        defaultValue: '',
-        collapseOnly: true
-      },
-      {
-        field: 'email',
-        name: '邮箱',
-        formType: 'text',
-        stylePercent: 50,
-        placeholder: '请输入邮箱',
-        defaultValue: '',
-        collapseOnly: true
-      },
-      {
-        field: 'website',
-        name: '网址',
-        formType: 'text',
-        stylePercent: 50,
-        placeholder: '请输入网址',
-        defaultValue: '',
-        collapseOnly: true
-      },
-      {
-        field: 'industry',
-        name: '客户行业',
-        formType: 'select',
-        stylePercent: 50,
-        placeholder: '请选择',
-        setting: ['智能制造', '装备制造', '汽车制造'],
-        defaultValue: '智能制造',
-        collapseOnly: true
-      }
-    ]
-  }
-]
+export const customerCreateFieldGroups = createFieldGroupsFromModel(customerFieldModel)
 
 export const createFields = customerCreateFieldGroups.flatMap(group => group.fields)
 
 export const poolDialogOptions = {
   status: 1,
   poolList: [
-    { poolId: '111', poolName: '111' },
+    { poolId: 'default', poolName: '默认客户公海' },
     { poolId: 'manufacture', poolName: '制造业公海' },
     { poolId: 'east', poolName: '华东公海' }
   ],
@@ -528,32 +235,96 @@ export const detailTabs = [
   { name: 'logs', label: '操作记录' }
 ]
 
+export const activityFieldGroups = [
+  [
+    {
+      field: 'content',
+      fieldName: 'content',
+      name: '跟进内容',
+      formType: 'textarea',
+      type: 2,
+      isNull: 1,
+      isMulti: 1,
+      stylePercent: 100,
+      maxLength: 800,
+      inputTips: '输入@可选择需通知人员',
+      defaultValue: ''
+    }
+  ],
+  [
+    {
+      field: 'visitPlanId',
+      fieldName: 'visitPlanId',
+      name: '拜访计划',
+      formType: 'visitPlan',
+      type: 112,
+      isNull: 0,
+      isMulti: 0,
+      stylePercent: 100,
+      defaultValue: ''
+    }
+  ],
+  [
+    {
+      field: 'remindTeamMembers',
+      fieldName: 'remindTeamMembers',
+      name: '提醒团队成员',
+      formType: 'user',
+      type: 10,
+      isNull: 0,
+      isMulti: 1,
+      stylePercent: 50,
+      defaultValue: []
+    }
+  ],
+  [
+    {
+      field: 'nextTime',
+      fieldName: 'nextTime',
+      name: '下次联系时间',
+      formType: 'datetime',
+      type: 13,
+      isNull: 0,
+      isMulti: 1,
+      stylePercent: 50,
+      inputTips: '',
+      defaultValue: ''
+    },
+    {
+      field: 'category',
+      fieldName: 'category',
+      name: '跟进方式',
+      formType: 'select',
+      type: 3,
+      options: '打电话,发邮件,发短信,见面拜访,活动',
+      setting: ['打电话', '发邮件', '发短信', '见面拜访', '活动'],
+      isNull: 0,
+      isMulti: 1,
+      stylePercent: 50,
+      defaultValue: ''
+    }
+  ]
+]
+
+export const activityFieldList = activityFieldGroups.flat()
+
 export const detailData = {
   customerId: '304001',
-  customerName: '合同客户',
+  customerName: '苏州星禾精密制造',
   crmType: '客户',
   dealStatus: 1,
   level: '',
   ownerUserName: 'admin',
   mobile: '',
-  contactsName: '合同联系人',
+  contactsName: '沈琳',
   contactsPhone: '?',
   tags: [],
   headBase: [
     { title: '客户级别', value: '' },
     { title: '负责人', value: 'admin' },
     { title: '手机', value: '' },
-    { title: '首要联系人', value: '合同联系人', formType: 'link' },
+    { title: '首要联系人', value: '沈琳', formType: 'link' },
     { title: '首要联系人电话', value: '?', showIcon: true }
-  ],
-  quickCreateList: [
-    { command: 'task', label: '新建任务' },
-    { command: 'contacts', label: '新建联系人' },
-    { command: 'business', label: '新建商机' },
-    { command: 'quotation', label: '新建报价单' },
-    { command: 'contract', label: '新建合同' },
-    { command: 'receivables', label: '新建回款' },
-    { command: 'team', label: '添加团队成员' }
   ],
   stageStatus: {
     dataId: 'stage-1',
@@ -577,41 +348,74 @@ export const detailData = {
     { title: '未回款总额', value: '0.2782', unit: '万元' },
     { title: '开票总额', value: '0.251', unit: '万元' }
   ],
-  baseInfoGroups: [
+  baseInfoGroups: createDetailGroupsFromModel(customerFieldModel, customerRows[0]),
+  activityTypes: [
+    { type: 'followRecord', label: '跟进记录' },
+    { type: 'dynamic', label: '动态' }
+  ],
+  activityFieldGroups,
+  activityFieldList,
+  followRecords: [
     {
-      name: '基本信息',
-      list: [
-        { fieldName: 'customerName', name: '客户名称', formType: 'text', value: '合同客户' },
-        { fieldName: 'address', name: '地址', formType: 'text', value: '' },
-        { fieldName: 'commonOptions', name: '通用选项集', formType: 'select', value: '' },
-        { fieldName: 'richText', name: '富文本', formType: 'textarea', value: '' },
-        { fieldName: 'source', name: '客户来源', formType: 'select', value: '市场活动' },
-        { fieldName: 'single', name: '单选', formType: 'radio', value: '' },
-        { fieldName: 'multiple', name: '多选', formType: 'checkbox', value: '' },
-        { fieldName: 'logo', name: '企业Logo', formType: 'file', value: '' },
-        { fieldName: 'mobile', name: '手机', formType: 'text', value: '' },
-        { fieldName: 'customerRelation', name: '客户关系', formType: 'customer_relations', value: '' },
-        { fieldName: 'telephone', name: '电话', formType: 'text', value: '' },
-        { fieldName: 'email', name: '邮箱', formType: 'text', value: '' },
-        { fieldName: 'website', name: '网址', formType: 'text', value: '' },
-        { fieldName: 'industry', name: '客户行业', formType: 'select', value: '智能制造' }
-      ]
+      id: '2063073800048930816',
+      primaryKeyId: '2063073800048930816',
+      activityId: '2061703936361164800',
+      type: 1,
+      activityType: 2,
+      activityTypeId: '2061703936361164800',
+      activityTypeName: '苏州星禾精密制造',
+      createUserName: 'admin',
+      createUser: { realname: 'admin', companyId: '1729083386843471872', img: '/adminFile/down/1990756825826697216' },
+      content: '确认样品交付时间，需补充报价单和合同审批节点。',
+      category: '打电话',
+      visitPlanId: '',
+      visitPlanName: '',
+      remindTeamMembers: [],
+      teamMember: [],
+      nextTime: '2026-06-25 00:00:00',
+      valid: null,
+      favour: 0,
+      favourList: [],
+      replyNum: 0,
+      img: [],
+      file: [],
+      relationDataOrig: { dataId: '2061703936361164800', moduleName: 'crm', moduleId: 2 },
+      fieldList: activityFieldList,
+      createTime: '2026-04-20 09:57:03',
+      updateTime: '2026-04-20 09:57:03'
     },
     {
-      name: '系统信息',
-      list: [
-        { fieldName: 'createUserName', name: '创建人', formType: 'text', value: 'xiaoxu' },
-        { fieldName: 'createTime', name: '创建时间', formType: 'datetime', value: '2026-04-17 09:10:22' },
-        { fieldName: 'updateTime', name: '更新时间', formType: 'datetime', value: '2026-05-20 14:29:19' },
-        { fieldName: 'ownerDeptName', name: '所属部门', formType: 'text', value: '销售部' }
-      ]
+      id: '2063073800048930817',
+      primaryKeyId: '2063073800048930817',
+      activityId: '2061703936361164800',
+      type: 1,
+      activityType: 2,
+      activityTypeId: '2061703936361164800',
+      activityTypeName: '智能制造服务合同',
+      createUserName: '林舟',
+      createUser: { realname: '林舟', companyId: '1729083386843471872' },
+      content: '客户确认本月继续推进合同审批，待补充联系人电话。',
+      category: '见面拜访',
+      visitPlanId: '',
+      visitPlanName: '',
+      remindTeamMembers: ['admin'],
+      teamMember: [{ realname: 'admin' }],
+      nextTime: '',
+      valid: null,
+      favour: 0,
+      favourList: [],
+      replyNum: 0,
+      img: [],
+      file: [],
+      relationDataOrig: { dataId: '2061703936361164800', moduleName: 'crm', moduleId: 2 },
+      fieldList: activityFieldList,
+      createTime: '2026-04-18 16:20:05',
+      updateTime: '2026-04-18 16:20:05'
     }
   ],
-  activityTabs: ['日程', '跟进记录', '任务', '发邮件'],
-  activities: [
-    { type: '回款', user: 'xiaoxu', title: '创建了回款', number: '20260520-0009', status: '审核中', time: '2026-05-20 15:34:12' },
-    { type: '客户跟进记录', user: 'admin', title: '确认样品交付时间，需补充报价单和合同审批节点。', number: '', status: '', time: '2026-04-20 09:57:03' },
-    { type: '日程', user: 'admin', title: '第二轮需求沟通，参与人 admin、林舟，提前 5 分钟提醒。', number: '', status: '', time: '2026-04-17 14:10:05' }
+  dynamics: [
+    { type: '动态', user: 'admin', action: '创建了客户', object: '苏州星禾精密制造', time: '2026-04-17 09:10:22' },
+    { type: '动态', user: '林舟', action: '更新了客户级别', object: '苏州星禾精密制造', time: '2026-04-20 11:58:31' }
   ],
   contactsFields: [
     { prop: 'name', label: '联系人姓名', width: 160 },
@@ -621,8 +425,8 @@ export const detailData = {
     { prop: 'role', label: '决策角色', width: 140 }
   ],
   contacts: [
-    { contactsId: 'ct-1', name: '合同联系人', mobile: '155****5545', telephone: '166****4542', post: '采购经理', role: '关键人', chiefly: true },
-    { contactsId: 'ct-2', name: '联系人0001', mobile: '139****6182', telephone: '-', post: '技术负责人', role: '影响者', chiefly: false }
+    { contactsId: 'ct-1', name: '沈琳', mobile: '155****5545', telephone: '166****4542', post: '采购经理', role: '关键人', chiefly: true },
+    { contactsId: 'ct-2', name: '王琪', mobile: '139****6182', telephone: '-', post: '技术负责人', role: '影响者', chiefly: false }
   ],
   files: [
     { fileId: 'f-1', name: '客户需求确认表.pdf', size: '2.4MB', createUserName: '林舟', createTime: '2026-04-20 10:12:31', source: '客户' },
@@ -631,7 +435,7 @@ export const detailData = {
   logs: [
     { createTime: '2026-04-20 11:58:31', realname: '林舟', content: ['将客户级别从 C级 调整为 A级。'] },
     { createTime: '2026-04-18 16:20:05', realname: 'admin', content: ['将客户负责人转移给 林舟。'] },
-    { createTime: '2026-04-17 09:10:22', realname: 'xiaoxu', content: ['创建客户 合同客户。'] }
+    { createTime: '2026-04-17 09:10:22', realname: 'admin', content: ['创建客户 苏州星禾精密制造。'] }
   ]
 }
 
@@ -641,10 +445,10 @@ const crmScenesByModule = moduleName => [
   { label: `下属负责的${moduleName}`, value: 'subordinate' },
   { label: `我关注的${moduleName}`, value: 'focus' },
   { label: '今天需联系', value: 'today' },
-  { label: '111', value: 'custom-111' },
-  { label: '99', value: 'custom-99' },
-  { label: '10', value: 'custom-10' },
-  { label: '11', value: 'custom-11' }
+  { label: `重点${moduleName}`, value: 'key-object' },
+  { label: `本周需联系`, value: 'week-follow' },
+  { label: `高价值${moduleName}`, value: 'high-value' },
+  { label: `待跟进${moduleName}`, value: 'pending-follow' }
 ]
 
 const createStageFlow = (flowName, rows) => ({
@@ -677,7 +481,7 @@ const createBaseInfoGroups = (mainField, mainName, mainValue, extras = []) => [
   {
     name: '系统信息',
     list: [
-      { fieldName: 'createUserName', name: '创建人', formType: 'text', value: 'xiaoxu' },
+      { fieldName: 'createUserName', name: '创建人', formType: 'text', value: 'admin' },
       { fieldName: 'createTime', name: '创建时间', formType: 'datetime', value: '2026-04-17 09:10:22' }
     ]
   }
@@ -706,7 +510,7 @@ const createDetailData = ({
   baseInfoGroups: createBaseInfoGroups(mainField, mainName, mainValue, baseExtras),
   logs: [
     { createTime: '2026-05-20 11:58:31', realname: '林舟', content: [`更新${crmType} ${mainValue}。`] },
-    { createTime: '2026-04-17 09:10:22', realname: 'xiaoxu', content: [`创建${crmType} ${mainValue}。`] }
+    { createTime: '2026-04-17 09:10:22', realname: 'admin', content: [`创建${crmType} ${mainValue}。`] }
   ]
 })
 
@@ -744,19 +548,12 @@ const createFieldGroups = (moduleName, mainField, mainLabel, extraFields = []) =
         defaultValue: 'admin'
       },
       {
-        field: 'dataCollapse',
-        name: '折叠字段',
-        formType: 'data_collapse',
-        stylePercent: 100
-      },
-      {
         field: 'remark',
         name: '备注',
         formType: 'rich_text_format',
         stylePercent: 100,
         placeholder: `填写${moduleName}备注`,
-        defaultValue: '',
-        collapseOnly: true
+        defaultValue: ''
       }
     ]
   }
@@ -791,9 +588,9 @@ const contactsFieldList = [
 ]
 
 const contactsRows = [
-  { contactsId: 'CT-001', __rowUid: 'CT-001-0', contactsName: '合同联系人', customerName: '合同客户', mobile: '155****5545', telephone: '166****4542', post: '采购经理', role: '关键人', ownerUserName: 'admin', updateTime: '2026-05-20 14:29:19', businessCount: 0, star: 1, callShow: true },
-  { contactsId: 'CT-002', __rowUid: 'CT-002-0', contactsName: '联系人0001', customerName: '小小亮', mobile: '139****6182', telephone: '', post: '技术负责人', role: '影响者', ownerUserName: '林舟', updateTime: '2026-04-20 09:57:03', businessCount: 0, star: 0, callShow: true },
-  { contactsId: 'CT-003', __rowUid: 'CT-003-0', contactsName: '张敏', customerName: '东莞临熵精密科技有限公司', mobile: '', telephone: '', post: '总经理', role: '决策人', ownerUserName: '张敏', updateTime: '2026-03-09 15:41:26', businessCount: 0, star: 0, callShow: false }
+  { contactsId: 'CT-001', __rowUid: 'CT-001-0', contactsName: '沈琳', customerName: '苏州星禾精密制造', mobile: '155****5545', telephone: '166****4542', post: '采购经理', role: '关键人', ownerUserName: 'admin', updateTime: '2026-05-20 14:29:19', businessCount: 0, star: 1, callShow: true },
+  { contactsId: 'CT-002', __rowUid: 'CT-002-0', contactsName: '王琪', customerName: '上海云启设备服务', mobile: '139****6182', telephone: '', post: '技术负责人', role: '影响者', ownerUserName: '林舟', updateTime: '2026-04-20 09:57:03', businessCount: 0, star: 0, callShow: true },
+  { contactsId: 'CT-003', __rowUid: 'CT-003-0', contactsName: '张敏', customerName: '深圳临熵精密科技', mobile: '', telephone: '', post: '总经理', role: '决策人', ownerUserName: '张敏', updateTime: '2026-03-09 15:41:26', businessCount: 0, star: 0, callShow: false }
 ]
 
 const businessFieldList = [
@@ -808,9 +605,9 @@ const businessFieldList = [
 ]
 
 const businessRows = [
-  { businessId: 'B-001', __rowUid: 'B-001-0', businessName: '智能制造扩容项目', customerName: '合同客户', money: '104k', stage: '初步沟通', source: '客户介绍', ownerUserName: 'admin', nextTime: '2026-06-05 10:30:00', updateTime: '2026-05-20 14:29:19', businessCount: 0, star: 1, callShow: false },
+  { businessId: 'B-001', __rowUid: 'B-001-0', businessName: '智能制造扩容项目', customerName: '苏州星禾精密制造', money: '104k', stage: '初步沟通', source: '客户介绍', ownerUserName: 'admin', nextTime: '2026-06-05 10:30:00', updateTime: '2026-05-20 14:29:19', businessCount: 0, star: 1, callShow: false },
   { businessId: 'B-002', __rowUid: 'B-002-0', businessName: '装备产线升级商机', customerName: '苏州星禾精密制造', money: '0.30万元', stage: '有些意向', source: '市场活动', ownerUserName: '林舟', nextTime: '', updateTime: '2026-04-20 09:57:02', businessCount: 0, star: 0, callShow: false },
-  { businessId: 'B-003', __rowUid: 'B-003-0', businessName: '汽车零部件改造项目', customerName: '国联汽车动力电...', money: '50k', stage: '开始洽谈', source: '广告投放', ownerUserName: '张敏', nextTime: '', updateTime: '2026-03-09 15:41:26', businessCount: 0, star: 0, callShow: false }
+  { businessId: 'B-003', __rowUid: 'B-003-0', businessName: '汽车零部件改造项目', customerName: '南京科锐自动化', money: '50k', stage: '开始洽谈', source: '广告投放', ownerUserName: '张敏', nextTime: '', updateTime: '2026-03-09 15:41:26', businessCount: 0, star: 0, callShow: false }
 ]
 
 const contractFieldList = [
@@ -825,9 +622,9 @@ const contractFieldList = [
 ]
 
 const contractRows = [
-  { contractId: 'CO-001', __rowUid: 'CO-001-0', contractNum: 'HT20260520-0009', contractName: '智能制造服务合同', customerName: '合同客户', money: '0.3123万元', checkStatus: '审核中', ownerUserName: 'admin', startTime: '2026-05-20', updateTime: '2026-05-20 15:34:12', businessCount: 0, star: 1, callShow: false },
-  { contractId: 'CO-002', __rowUid: 'CO-002-0', contractNum: 'HT20260420-0001', contractName: '设备维护合同', customerName: '小小亮', money: '0.251万元', checkStatus: '通过', ownerUserName: '林舟', startTime: '2026-04-20', updateTime: '2026-04-20 12:56:56', businessCount: 0, star: 0, callShow: false },
-  { contractId: 'CO-003', __rowUid: 'CO-003-0', contractNum: 'HT20260309-0007', contractName: '汽车动力电池合同', customerName: '国联汽车动力电...', money: '50k', checkStatus: '草稿', ownerUserName: '张敏', startTime: '', updateTime: '2026-03-09 15:41:26', businessCount: 0, star: 0, callShow: false }
+  { contractId: 'CO-001', __rowUid: 'CO-001-0', contractNum: 'HT20260520-0009', contractName: '智能制造服务合同', customerName: '苏州星禾精密制造', money: '0.3123万元', checkStatus: '审核中', ownerUserName: 'admin', startTime: '2026-05-20', updateTime: '2026-05-20 15:34:12', businessCount: 0, star: 1, callShow: false },
+  { contractId: 'CO-002', __rowUid: 'CO-002-0', contractNum: 'HT20260420-0001', contractName: '设备维护合同', customerName: '上海云启设备服务', money: '0.251万元', checkStatus: '通过', ownerUserName: '林舟', startTime: '2026-04-20', updateTime: '2026-04-20 12:56:56', businessCount: 0, star: 0, callShow: false },
+  { contractId: 'CO-003', __rowUid: 'CO-003-0', contractNum: 'HT20260309-0007', contractName: '汽车动力电池合同', customerName: '南京科锐自动化', money: '50k', checkStatus: '草稿', ownerUserName: '张敏', startTime: '', updateTime: '2026-03-09 15:41:26', businessCount: 0, star: 0, callShow: false }
 ]
 
 function firstMockValue(rows, field) {
@@ -863,7 +660,6 @@ function normalizeTableFields(fields, rows) {
 function normalizeCreateField(field) {
   const prop = field.prop || field.field
   const label = field.label || field.name
-  const isControlField = field.formType === 'data_collapse'
 
   return {
     ...field,
@@ -877,8 +673,8 @@ function normalizeCreateField(field) {
     placeholder: field.placeholder || '',
     setting: field.setting || [],
     tableVisible: field.tableVisible ?? false,
-    createVisible: field.createVisible ?? !isControlField,
-    detailVisible: field.detailVisible ?? !isControlField,
+    createVisible: field.createVisible ?? true,
+    detailVisible: field.detailVisible ?? true,
     mockValue: field.mockValue ?? field.defaultValue ?? ''
   }
 }
@@ -963,10 +759,12 @@ function normalizeTemplate(template) {
     ...template,
     rows,
     fieldList: normalizeTableFields(template.fieldList, rows),
+    filterFieldList: normalizeTableFields(template.filterFieldList || template.fieldList, rows),
     cardRows: template.cardRows.length ? template.cardRows : toCardRows(rows),
     createFieldGroups: normalizeCreateFieldGroups(template.createFieldGroups),
     detailData: normalizeDetailData(template, template.detailData),
-    operations: normalizeOperations(template.operations)
+    operations: normalizeOperations(template.operations),
+    uiProfile
   }
 }
 
@@ -984,6 +782,7 @@ export const crmObjectTemplates = normalizeTemplates({
     searchPlaceholder: '客户名称/手机/电话',
     sceneList: sceneList,
     fieldList: fieldList,
+    filterFieldList: createFilterFieldsFromModel(customerFieldModel),
     rows: customerRows,
     stageFlow: stageFlow,
     cardRows: cardCustomers,
@@ -1041,7 +840,7 @@ export const crmObjectTemplates = normalizeTemplates({
     stageFlow: createStageFlow('联系人阶段', contactsRows),
     cardRows: toCardRows(contactsRows),
     createFieldGroups: createFieldGroups('联系人', 'contactsName', '联系人姓名', [
-      { field: 'customerName', name: '客户名称', formType: 'select', isNull: 1, stylePercent: 50, placeholder: '请选择客户', setting: ['合同客户', '小小亮'], defaultValue: '合同客户' },
+      { field: 'customerName', name: '客户名称', formType: 'select', isNull: 1, stylePercent: 50, placeholder: '请选择客户', setting: ['苏州星禾精密制造', '上海云启设备服务'], defaultValue: '苏州星禾精密制造' },
       { field: 'mobile', name: '手机', formType: 'text', stylePercent: 50, placeholder: '请输入手机', defaultValue: '155****5545' }
     ]),
     detailTabs: detailTabs,
@@ -1051,15 +850,15 @@ export const crmObjectTemplates = normalizeTemplates({
       crmType: '联系人',
       mainField: 'contactsName',
       mainName: '联系人姓名',
-      mainValue: '合同联系人',
+      mainValue: '沈琳',
       headBase: [
-        { title: '客户名称', value: '合同客户', formType: 'link' },
+        { title: '客户名称', value: '苏州星禾精密制造', formType: 'link' },
         { title: '负责人', value: 'admin' },
         { title: '手机', value: '155****5545' },
         { title: '职务', value: '采购经理' }
       ],
       baseExtras: [
-        { fieldName: 'customerName', name: '客户名称', formType: 'customer', value: '合同客户' },
+        { fieldName: 'customerName', name: '客户名称', formType: 'customer', value: '苏州星禾精密制造' },
         { fieldName: 'mobile', name: '手机', formType: 'text', value: '155****5545' },
         { fieldName: 'post', name: '职务', formType: 'text', value: '采购经理' }
       ]
@@ -1079,7 +878,7 @@ export const crmObjectTemplates = normalizeTemplates({
     stageFlow: createStageFlow('商机阶段', businessRows),
     cardRows: toCardRows(businessRows),
     createFieldGroups: createFieldGroups('商机', 'businessName', '商机名称', [
-      { field: 'customerName', name: '客户名称', formType: 'select', isNull: 1, stylePercent: 50, placeholder: '请选择客户', setting: ['合同客户', '苏州星禾精密制造'], defaultValue: '合同客户' },
+      { field: 'customerName', name: '客户名称', formType: 'select', isNull: 1, stylePercent: 50, placeholder: '请选择客户', setting: ['苏州星禾精密制造', '苏州星禾精密制造'], defaultValue: '苏州星禾精密制造' },
       { field: 'money', name: '商机金额', formType: 'text', stylePercent: 50, placeholder: '请输入金额', defaultValue: '104000' }
     ]),
     detailTabs: detailTabs,
@@ -1091,13 +890,13 @@ export const crmObjectTemplates = normalizeTemplates({
       mainName: '商机名称',
       mainValue: '智能制造扩容项目',
       headBase: [
-        { title: '客户名称', value: '合同客户', formType: 'link' },
+        { title: '客户名称', value: '苏州星禾精密制造', formType: 'link' },
         { title: '负责人', value: 'admin' },
         { title: '商机金额', value: '104k' },
         { title: '商机阶段', value: '初步沟通' }
       ],
       baseExtras: [
-        { fieldName: 'customerName', name: '客户名称', formType: 'customer', value: '合同客户' },
+        { fieldName: 'customerName', name: '客户名称', formType: 'customer', value: '苏州星禾精密制造' },
         { fieldName: 'money', name: '商机金额', formType: 'text', value: '104k' },
         { fieldName: 'stage', name: '商机阶段', formType: 'select', value: '初步沟通' }
       ]
@@ -1118,7 +917,7 @@ export const crmObjectTemplates = normalizeTemplates({
     cardRows: toCardRows(contractRows),
     createFieldGroups: createFieldGroups('合同', 'contractNum', '合同编号', [
       { field: 'contractName', name: '合同名称', formType: 'text', isNull: 1, stylePercent: 50, placeholder: '请输入合同名称', defaultValue: '智能制造服务合同' },
-      { field: 'customerName', name: '客户名称', formType: 'select', isNull: 1, stylePercent: 50, placeholder: '请选择客户', setting: ['合同客户', '小小亮'], defaultValue: '合同客户' }
+      { field: 'customerName', name: '客户名称', formType: 'select', isNull: 1, stylePercent: 50, placeholder: '请选择客户', setting: ['苏州星禾精密制造', '上海云启设备服务'], defaultValue: '苏州星禾精密制造' }
     ]),
     detailTabs: detailTabs,
     detailData: createDetailData({
@@ -1130,13 +929,13 @@ export const crmObjectTemplates = normalizeTemplates({
       mainValue: 'HT20260520-0009',
       headBase: [
         { title: '合同名称', value: '智能制造服务合同' },
-        { title: '客户名称', value: '合同客户', formType: 'link' },
+        { title: '客户名称', value: '苏州星禾精密制造', formType: 'link' },
         { title: '负责人', value: 'admin' },
         { title: '合同金额', value: '0.3123万元' }
       ],
       baseExtras: [
         { fieldName: 'contractName', name: '合同名称', formType: 'text', value: '智能制造服务合同' },
-        { fieldName: 'customerName', name: '客户名称', formType: 'customer', value: '合同客户' },
+        { fieldName: 'customerName', name: '客户名称', formType: 'customer', value: '苏州星禾精密制造' },
         { fieldName: 'money', name: '合同金额', formType: 'text', value: '0.3123万元' }
       ]
     }),
